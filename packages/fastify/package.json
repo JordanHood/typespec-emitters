@@ -1,0 +1,94 @@
+{
+  "name": "@typespec-dev/emitter-fastify",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "TypeSpec emitter for Fastify server code generation",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JordanHood/typespec-emitters.git",
+    "directory": "packages/fastify"
+  },
+  "main": "dist/src/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    },
+    "./testing": {
+      "types": "./dist/src/testing/index.d.ts",
+      "default": "./dist/src/testing/index.js"
+    }
+  },
+  "peerDependencies": {
+    "@alloy-js/core": "0.22.0",
+    "@alloy-js/typescript": "0.22.0",
+    "@typespec/compiler": "1.8.0",
+    "@typespec/emitter-framework": "0.15.0",
+    "@typespec/http": "1.8.0",
+    "fastify-type-provider-zod": "6.1.0",
+    "typespec-zod": "0.0.0-63",
+    "zod": "4.3.6"
+  },
+  "peerDependenciesMeta": {
+    "fastify-type-provider-zod": {
+      "optional": false
+    },
+    "zod": {
+      "optional": false
+    },
+    "typespec-zod": {
+      "optional": false
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "keywords": [
+    "typespec",
+    "fastify",
+    "emitter",
+    "tsp",
+    "codegen"
+  ],
+  "scripts": {
+    "build:emitter": "alloy build",
+    "build": "pnpm build:emitter && pnpm emit:e2e --silent && pnpm build:emitter",
+    "watch": "alloy build --watch",
+    "dev": "alloy build --watch",
+    "type": "tsc --noEmit -p tsconfig.test.json",
+    "test": "pnpm type && pnpm test:unit && pnpm test:e2e",
+    "test:unit": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "pnpm emit:e2e && pnpm run:e2e",
+    "emit:e2e": "node eng/scripts/emit-e2e.js",
+    "run:e2e": "vitest run --config vitest.config.e2e.ts",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "clean": "rimraf dist node_modules"
+  },
+  "dependencies": {
+    "@alloy-js/cli": "0.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:test",
+    "@typespec/compiler": "catalog:",
+    "@typespec/emitter-framework": "0.15.0",
+    "@typespec/http-specs": "0.1.0-alpha.30",
+    "@typespec/spector": "0.1.0-alpha.22",
+    "@vitest/coverage-v8": "4.0.18",
+    "@vitest/ui": "catalog:test",
+    "fastify": "5.6.2",
+    "fastify-type-provider-zod": "6.1.0",
+    "rimraf": "catalog:build",
+    "typescript": "catalog:",
+    "typespec-zod": "0.0.0-63",
+    "vitest": "catalog:",
+    "zod": "4.3.6"
+  }
+}

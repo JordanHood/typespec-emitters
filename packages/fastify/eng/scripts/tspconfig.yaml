@@ -1,0 +1,6 @@
+emit:
+  - "@typespec-dev/emitter-fastify"
+
+options:
+  "@typespec-dev/emitter-fastify":
+    emitter-output-dir: "{output-dir}"
