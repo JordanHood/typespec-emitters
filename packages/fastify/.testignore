@@ -1,0 +1,32 @@
+# Focus on parameters and type tests
+# Skip everything else
+
+authentication/
+documentation
+encode/
+payload/
+response/
+routes
+serialization/
+server/
+special-headers/
+special-words
+streaming/
+versioning/
+
+# Skip other parameter tests
+parameters/collection-format
+
+# Type tests with known typespec-zod limitations
+# These require fixes in the upstream typespec-zod library:
+# - Circular/recursive types need z.lazy()
+# - Enum forward references need reordering
+# - Record types need .extend() instead of .merge()
+# - Description string escaping issues
+type/array
+type/dictionary
+type/union
+type/property/nullable
+type/property/additional-properties
+type/property/value-types
+type/property/optionality

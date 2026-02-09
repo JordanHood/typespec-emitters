@@ -1,21 +1,23 @@
 packages:
-  - 'packages/*'
+  - "packages/*"
 
 catalog:
-  '@typespec/compiler': ^0.63.0
-  '@typespec/http': ^0.63.0
-  '@typespec/rest': ^0.63.0
-  '@typespec/openapi': ^0.63.0
-  typescript: ^5.7.2
-  vitest: ^2.1.8
-  eslint: ^9.17.0
-  prettier: ^3.4.2
+  "@typespec/compiler": 1.8.0
+  "@typespec/http": 1.8.0
+  "@typespec/rest": 1.0.0
+  "@typespec/openapi": 1.0.0
+  "@alloy-js/core": 0.22.0
+  "@alloy-js/typescript": 0.22.0
+  typescript: 5.9.3
+  vitest: 4.0.18
+  eslint: 9.39.2
+  prettier: 3.8.1
 
 catalogs:
   build:
-    tsup: ^8.3.5
-    rimraf: ^6.0.1
+    tsup: 8.3.5
+    rimraf: 6.0.1
 
   test:
-    '@vitest/ui': ^2.1.8
-    '@types/node': ^22.10.5
+    "@vitest/ui": 4.0.18
+    "@types/node": 24.10.10

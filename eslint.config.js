@@ -1,10 +1,34 @@
-import js from '@eslint/js';
-import tseslint from 'typescript-eslint';
+import neostandard from 'neostandard';
+import prettierConfig from 'eslint-config-prettier';
+import prettierPlugin from 'eslint-plugin-prettier';
 
-export default tseslint.config(
-  js.configs.recommended,
-  ...tseslint.configs.recommended,
+export default [
   {
-    ignores: ['**/dist/**', '**/node_modules/**', '**/.turbo/**'],
-  }
-);
+    ignores: [
+      '**/dist/**',
+      '**/node_modules/**',
+      '**/.turbo/**',
+      '**/coverage/**',
+      '**/.temp/**',
+      '**/tsp-output/**',
+      '**/test/fixtures/tsp-output/**',
+      '**/test/e2e/generated/**',
+      '**/examples/**',
+      '**/temp/**',
+      '**/eng/scripts/**',
+    ],
+  },
+  ...neostandard({
+    ts: true,
+  }),
+  prettierConfig,
+  {
+    plugins: {
+      prettier: prettierPlugin,
+    },
+    rules: {
+      'prettier/prettier': 'error',
+      'react/jsx-key': 'off',
+    },
+  },
+];
