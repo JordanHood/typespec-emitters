@@ -60,7 +60,7 @@ export function RouteRegistration(props: RouteRegistrationProps) {
               }
             }
 
-            const path = pathWithoutQuery.replace(/\{([^}]+)\}/g, function (_match, p1) {
+            const path = pathWithoutQuery.replace(/\{([^}]+)\}/g, (_match, p1) => {
               const paramName = p1.startsWith('/') ? p1.slice(1) : p1;
               const prefix = p1.startsWith('/') ? '/:' : ':';
               const suffix = optionalParams.has(paramName) ? '?' : '';
@@ -86,9 +86,7 @@ export function RouteRegistration(props: RouteRegistrationProps) {
 function generateZodRouteSchema(operation: HttpOperation): Children {
   const schemaProps: Children[] = [];
 
-  const pathParams = operation.parameters.parameters.filter(function (p) {
-    return p.type === 'path';
-  });
+  const pathParams = operation.parameters.parameters.filter((p) => p.type === 'path');
 
   if (pathParams.length > 0) {
     const pathProperties: Children[] = [];
@@ -122,9 +120,7 @@ function generateZodRouteSchema(operation: HttpOperation): Children {
     );
   }
 
-  const queryParams = operation.parameters.parameters.filter(function (p) {
-    return p.type === 'query';
-  });
+  const queryParams = operation.parameters.parameters.filter((p) => p.type === 'query');
 
   if (queryParams.length > 0) {
     if (schemaProps.length > 0) schemaProps.push(<>, </>);
@@ -230,8 +226,7 @@ function generateRouteHandler(
 
   for (const param of operation.parameters.parameters) {
     if (param.type === 'path') {
-      const paramName = namePolicy.getName(param.param.name, 'parameter');
-      callArgs.push(<>request.params.{paramName}</>);
+      callArgs.push(<>request.params.{param.param.name}</>);
     }
   }
 
@@ -264,10 +259,11 @@ function generateRouteHandler(
     const optionsObj = (
       <ts.ObjectExpression>
         {queryParams
-          .map(function (param, index) {
+          .map((param, index) => {
             const paramName = namePolicy.getName(param.param.name, 'object-member-data');
+            const rawName = param.param.name;
             const separator = index > 0 ? ', ' : '';
-            return `${separator}${paramName}: request.query.${paramName}`;
+            return `${separator}${paramName}: request.query.${rawName}`;
           })
           .join('')}
       </ts.ObjectExpression>
@@ -276,20 +272,13 @@ function generateRouteHandler(
   }
 
   const isVoid = isVoidType(operation.operation.returnType);
-  const is204Response = operation.responses.some(function (r) {
-    return r.statusCodes === 204;
-  });
+  const is204Response = operation.responses.some((r) => r.statusCodes === 204);
   const isNoContent = isVoid || is204Response;
 
   const contentType = operation.responses
-    .find(function (r) {
-      return r.responses.some(function (rc) {
-        return rc.body?.contentTypes && rc.body.contentTypes.length > 0;
-      });
-    })
-    ?.responses.find(function (rc) {
-      return rc.body?.contentTypes && rc.body.contentTypes.length > 0;
-    })?.body?.contentTypes[0];
+    .find((r) => r.responses.some((rc) => rc.body?.contentTypes && rc.body.contentTypes.length > 0))
+    ?.responses.find((rc) => rc.body?.contentTypes && rc.body.contentTypes.length > 0)?.body
+    ?.contentTypes[0];
 
   return (
     <ts.FunctionExpression async parameters={[{ name: 'request' }, { name: 'reply' }]}>

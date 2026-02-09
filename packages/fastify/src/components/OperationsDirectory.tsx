@@ -16,11 +16,9 @@ export function OperationsDirectory(props: OperationsDirectoryProps) {
     <SourceDirectory path="operations">
       <For each={Array.from(props.groupedOperations.entries())}>
         {([containerName, operations]) => {
-          const hasResponseWithBody = operations.some(function (op) {
+          const hasResponseWithBody = operations.some((op) => {
             const isVoid = isVoidType(op.operation.returnType);
-            const is204 = op.responses.some(function (r) {
-              return r.statusCodes === 204;
-            });
+            const is204 = op.responses.some((r) => r.statusCodes === 204);
             return !isVoid && !is204;
           });
 

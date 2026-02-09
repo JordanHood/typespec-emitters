@@ -96,9 +96,7 @@ export function OperationInterface(props: OperationInterfaceProps) {
               });
             }
             const isVoid = isVoidType(operation.operation.returnType);
-            const is204Response = operation.responses.some(function (r) {
-              return r.statusCodes === 204;
-            });
+            const is204Response = operation.responses.some((r) => r.statusCodes === 204);
             const shouldEmitVoid = isVoid || is204Response;
             const noContentRef = getNoContentResponseRef();
 
@@ -107,14 +105,9 @@ export function OperationInterface(props: OperationInterfaceProps) {
               returnType = code`Promise<${noContentRef}>`;
             } else {
               const responseBody = operation.responses
-                .find(function (r) {
-                  return r.responses.some(function (rc) {
-                    return rc.body != null;
-                  });
-                })
-                ?.responses.find(function (rc) {
-                  return rc.body != null;
-                })?.body;
+                .find((r) => r.responses.some((rc) => rc.body != null))
+                ?.responses.find((rc) => rc.body != null)
+                ?.body;
 
               if (responseBody) {
                 returnType = code`Promise<ResponseWithBody<${(<TypeExpression type={responseBody.type} />)}>>`;
