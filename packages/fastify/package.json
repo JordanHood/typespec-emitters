@@ -1,6 +1,6 @@
 {
   "name": "@typespec-dev/emitter-fastify",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "description": "TypeSpec emitter for Fastify server code generation",
   "license": "MIT",
