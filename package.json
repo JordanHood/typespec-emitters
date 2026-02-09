@@ -8,6 +8,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "lint": "turbo run lint",
+    "lint:fix": "turbo run lint:fix",
     "test": "turbo run test",
     "clean": "turbo run clean && rimraf node_modules",
     "clean:all": "turbo run clean && rimraf node_modules **/node_modules",

@@ -98,9 +98,8 @@ describe('fastify emitter', () => {
     `);
 
     expect(results['models/testservice.ts']).toBeDefined();
-    expect(results['models/testservice.ts']).toContain('interface Pet');
-    expect(results['models/testservice.ts']).toContain('id: number');
-    expect(results['models/testservice.ts']).toContain('name: string');
+    expect(results['models/testservice.ts']).toContain('export const pet = z');
+    expect(results['models/testservice.ts']).toContain('export type Pet = z.infer<typeof pet>');
   });
 
   it('handles path parameters correctly', async () => {

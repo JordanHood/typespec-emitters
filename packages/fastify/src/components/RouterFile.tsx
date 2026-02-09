@@ -46,7 +46,9 @@ export function RouterFile(props: RouterFileProps) {
         returnType="void"
       >
         {code`server.setValidatorCompiler(${fastifyTypeProviderZod.validatorCompiler});`}
+        {'\n'}
         {code`server.setSerializerCompiler(${fastifyTypeProviderZod.serializerCompiler});`}
+        {'\n'}
         {code`await ${(
           <ts.FunctionCallExpression target={props.loadRoutesRef} args={['server', 'operations']} />
         )};`}

@@ -4,7 +4,7 @@ import { registerRoutes } from '../../generated/type/enum/fixed/router.js';
 import { startServer } from '../../helpers.js';
 import { runScenario } from '../../spector.js';
 import type { String } from '../../generated/type/enum/fixed/operations/string.js';
-import { DaysOfWeekEnum } from '../../generated/type/enum/fixed/models/fixed.js';
+import type { DaysOfWeekEnum } from '../../generated/type/enum/fixed/models/fixed.js';
 
 describe('Type.Enum.Fixed', () => {
   let serverAbortController: AbortController;
@@ -22,7 +22,7 @@ describe('Type.Enum.Fixed', () => {
       getKnownValue: async function () {
         return {
           statusCode: 200,
-          body: DaysOfWeekEnum.Monday,
+          body: 'Monday',
         };
       },
       putKnownValue: async function (body: DaysOfWeekEnum, contentType: 'application/json') {

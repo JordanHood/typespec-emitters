@@ -8,13 +8,14 @@ import { getOperationInterfaceRef } from './OperationInterface.js';
 export interface RoutesDirectoryProps {
   groupedOperations: Map<string, HttpOperation[]>;
   loadRoutesRef: Refkey;
+  namespace: string;
 }
 
 /**
  * Generates the routes directory with individual route files and an index loader.
  */
 export function RoutesDirectory(props: RoutesDirectoryProps) {
-  const { groupedOperations, loadRoutesRef } = props;
+  const { groupedOperations, loadRoutesRef, namespace } = props;
   const containerNames = Array.from(groupedOperations.keys());
 
   const operationsType = (
@@ -37,7 +38,11 @@ export function RoutesDirectory(props: RoutesDirectoryProps) {
       <For each={Array.from(groupedOperations.entries())}>
         {([containerName, operations]) => (
           <ts.SourceFile path={`${containerName.toLowerCase()}.routes.ts`}>
-            <RouteRegistration containerName={containerName} operations={operations} />
+            <RouteRegistration
+              containerName={containerName}
+              operations={operations}
+              namespace={namespace}
+            />
           </ts.SourceFile>
         )}
       </For>

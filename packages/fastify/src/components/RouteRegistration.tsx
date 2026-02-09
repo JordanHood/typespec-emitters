@@ -12,20 +12,13 @@ import { ZodSchema, zod } from 'typespec-zod';
 export interface RouteRegistrationProps {
   containerName: string;
   operations: HttpOperation[];
+  namespace: string;
 }
 
-/**
- * Creates a refkey for a route registration function.
- * This allows the loadRoutes function to reference it with automatic imports.
- */
 export function getRouteRegistrationRef(containerName: string): Refkey {
   return refkey(containerName, 'route-registration');
 }
 
-/**
- * Generates Fastify route registration functions with Zod schema validation.
- * Uses fastify-type-provider-zod for automatic type inference and runtime validation.
- */
 export function RouteRegistration(props: RouteRegistrationProps) {
   const { containerName, operations } = props;
   const namePolicy = useTSNamePolicy();
@@ -104,17 +97,18 @@ function generateZodRouteSchema(operation: HttpOperation): Children {
       const paramName = param.param.name;
       const isOptional = param.param.optional;
       if (i > 0) pathProperties.push(<>, </>);
+
       if (isOptional) {
         pathProperties.push(
           <>
-            {paramName}: <ZodSchema type={param.param.type} />
+            {paramName}: <ZodSchema type={param.param.type} nested />
             .optional()
           </>
         );
       } else {
         pathProperties.push(
           <>
-            {paramName}: <ZodSchema type={param.param.type} />
+            {paramName}: <ZodSchema type={param.param.type} nested />
           </>
         );
       }
@@ -175,17 +169,17 @@ function generateZodRouteSchema(operation: HttpOperation): Children {
           );
         }
       } else {
-        const baseSchema = <ZodSchema type={param.param.type} />;
         if (isOptional) {
           queryProperties.push(
             <>
-              {paramName}: {baseSchema}.optional()
+              {paramName}: <ZodSchema type={param.param.type} nested />
+              .optional()
             </>
           );
         } else {
           queryProperties.push(
             <>
-              {paramName}: {baseSchema}
+              {paramName}: <ZodSchema type={param.param.type} nested />
             </>
           );
         }
@@ -208,7 +202,7 @@ function generateZodRouteSchema(operation: HttpOperation): Children {
       if (schemaProps.length > 0) schemaProps.push(<>, </>);
       schemaProps.push(
         <>
-          body: <ZodSchema type={bodyParam.type} />
+          body: <ZodSchema type={bodyParam.type} nested />
         </>
       );
     }
