@@ -106,8 +106,7 @@ export function OperationInterface(props: OperationInterfaceProps) {
             } else {
               const responseBody = operation.responses
                 .find((r) => r.responses.some((rc) => rc.body != null))
-                ?.responses.find((rc) => rc.body != null)
-                ?.body;
+                ?.responses.find((rc) => rc.body != null)?.body;
 
               if (responseBody) {
                 returnType = code`Promise<ResponseWithBody<${(<TypeExpression type={responseBody.type} />)}>>`;

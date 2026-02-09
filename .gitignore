@@ -9,8 +9,6 @@ lib
 .env.local
 coverage
 *.tsbuildinfo
-.changeset/*.md
-!.changeset/README.md
 **/.temp
 **/tsp-output
 **/temp

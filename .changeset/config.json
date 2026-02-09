@@ -1,6 +1,11 @@
 {
-  "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
-  "changelog": "@changesets/cli/changelog",
+  "$schema": "https://unpkg.com/@changesets/config@3.1.2/schema.json",
+  "changelog": [
+    "@changesets/changelog-github",
+    {
+      "repo": "JordanHood/typespec-emitters"
+    }
+  ],
   "commit": false,
   "fixed": [],
   "linked": [],
