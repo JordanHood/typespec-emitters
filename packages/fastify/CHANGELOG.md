@@ -1,5 +1,11 @@
 # @typespec-dev/emitter-fastify
 
+## 0.1.1
+
+### Patch Changes
+
+- [`792f8b3`](https://github.com/JordanHood/typespec-emitters/commit/792f8b3fc5d948595ed5aea2e9bc5642e5911e84) Thanks [@JordanHood](https://github.com/JordanHood)! - Clean up dependency classifications: move alloy-js from peer to regular deps
+
 ## 0.1.0
 
 ### Minor Changes
