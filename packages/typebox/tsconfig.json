@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "rootDir": ".",
+    "outDir": "dist",
+    "jsx": "preserve",
+    "jsxImportSource": "@alloy-js/core"
+  },
+  "include": [
+    "src",
+    "test"
+  ],
+  "exclude": [
+    "examples",
+    "temp"
+  ]
+}

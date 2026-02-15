@@ -1,0 +1,67 @@
+{
+  "name": "@typespec-dev/emitter-typebox",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "A TypeSpec emitter and library for creating TypeBox schemas from TypeSpec types.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JordanHood/typespec-emitters.git",
+    "directory": "packages/typebox"
+  },
+  "main": "dist/src/index.js",
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "default": "./dist/src/index.js"
+    },
+    "./testing": {
+      "types": "./dist/src/testing/index.d.ts",
+      "default": "./dist/src/testing/index.js"
+    }
+  },
+  "peerDependencies": {
+    "@alloy-js/core": "0.22.0",
+    "@alloy-js/typescript": "0.22.0",
+    "@typespec/compiler": "1.8.0",
+    "@typespec/emitter-framework": "0.15.0"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE",
+    "package.json"
+  ],
+  "keywords": [
+    "typespec",
+    "typebox",
+    "emitter",
+    "tsp",
+    "codegen",
+    "schema"
+  ],
+  "scripts": {
+    "build:emitter": "alloy build",
+    "build": "pnpm build:emitter",
+    "watch": "alloy build --watch",
+    "dev": "alloy build --watch",
+    "type": "tsc --noEmit -p tsconfig.test.json",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "clean": "rimraf dist node_modules"
+  },
+  "dependencies": {
+    "@alloy-js/cli": "catalog:"
+  },
+  "devDependencies": {
+    "@alloy-js/rollup-plugin": "catalog:",
+    "@types/node": "catalog:test",
+    "@typespec/compiler": "catalog:",
+    "@typespec/emitter-framework": "catalog:",
+    "rimraf": "catalog:build",
+    "typescript": "catalog:",
+    "vitest": "catalog:"
+  }
+}
