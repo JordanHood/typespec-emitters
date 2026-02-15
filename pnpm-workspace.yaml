@@ -3,10 +3,13 @@ packages:
 
 catalog:
   "@typespec/compiler": 1.8.0
+  "@typespec/emitter-framework": 0.15.0
   "@typespec/http": 1.8.0
   "@typespec/rest": 1.0.0
   "@typespec/openapi": 1.0.0
+  "@alloy-js/cli": 0.22.0
   "@alloy-js/core": 0.22.0
+  "@alloy-js/rollup-plugin": 0.1.0
   "@alloy-js/typescript": 0.22.0
   typescript: 5.9.3
   vitest: 4.0.18

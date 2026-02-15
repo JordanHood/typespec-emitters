@@ -73,12 +73,12 @@
     "clean": "rimraf dist node_modules"
   },
   "dependencies": {
-    "@alloy-js/cli": "0.22.0"
+    "@alloy-js/cli": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:test",
     "@typespec/compiler": "catalog:",
-    "@typespec/emitter-framework": "0.15.0",
+    "@typespec/emitter-framework": "catalog:",
     "@typespec/http-specs": "0.1.0-alpha.30",
     "@typespec/spector": "0.1.0-alpha.22",
     "@vitest/coverage-v8": "4.0.18",
