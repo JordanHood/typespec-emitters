@@ -21,8 +21,6 @@
     }
   },
   "peerDependencies": {
-    "@alloy-js/core": "0.22.0",
-    "@alloy-js/typescript": "0.22.0",
     "@typespec/compiler": "1.8.0",
     "@typespec/emitter-framework": "0.15.0",
     "@typespec/http": "1.8.0",
@@ -73,9 +71,11 @@
     "clean": "rimraf dist node_modules"
   },
   "dependencies": {
-    "@alloy-js/cli": "catalog:"
+    "@alloy-js/core": "catalog:",
+    "@alloy-js/typescript": "catalog:"
   },
   "devDependencies": {
+    "@alloy-js/cli": "catalog:",
     "@types/node": "catalog:test",
     "@typespec/compiler": "catalog:",
     "@typespec/emitter-framework": "catalog:",
