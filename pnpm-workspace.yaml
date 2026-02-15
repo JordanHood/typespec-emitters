@@ -1,16 +1,16 @@
 packages:
-  - "packages/*"
+  - packages/*
 
 catalog:
-  "@typespec/compiler": 1.8.0
-  "@typespec/emitter-framework": 0.15.0
-  "@typespec/http": 1.8.0
-  "@typespec/rest": 1.0.0
-  "@typespec/openapi": 1.0.0
   "@alloy-js/cli": 0.22.0
   "@alloy-js/core": 0.22.0
   "@alloy-js/rollup-plugin": 0.1.0
   "@alloy-js/typescript": 0.22.0
+  "@typespec/compiler": 1.8.0
+  "@typespec/emitter-framework": 0.15.0
+  "@typespec/http": 1.8.0
+  "@typespec/openapi": 1.0.0
+  "@typespec/rest": 1.0.0
   typescript: 5.9.3
   vitest: 4.0.18
   eslint: 9.39.2
@@ -18,9 +18,8 @@ catalog:
 
 catalogs:
   build:
+    rimraf: 6.1.2
     tsup: 8.3.5
-    rimraf: 6.0.1
-
   test:
-    "@vitest/ui": 4.0.18
     "@types/node": 24.10.10
+    "@vitest/ui": 4.0.18
