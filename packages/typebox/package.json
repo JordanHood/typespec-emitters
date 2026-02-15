@@ -1,6 +1,6 @@
 {
   "name": "@typespec-dev/emitter-typebox",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "description": "A TypeSpec emitter and library for creating TypeBox schemas from TypeSpec types.",
   "license": "MIT",
