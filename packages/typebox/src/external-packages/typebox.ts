@@ -5,7 +5,7 @@ export const typebox = createPackage({
   version: '^1.0.0',
   descriptor: {
     '.': {
-      named: ['Type'],
+      named: ['Type', 'Static'],
     },
   },
 });
