@@ -31,6 +31,7 @@ describe('Type.Scalar', () => {
         };
       },
       put: async function (body: string, contentType: 'application/json') {
+        expect(body).toBe('test');
         return {
           statusCode: 204,
         };
@@ -45,6 +46,7 @@ describe('Type.Scalar', () => {
         };
       },
       put: async function (body: boolean, contentType: 'application/json') {
+        expect(body).toBe(true);
         return {
           statusCode: 204,
         };
@@ -59,6 +61,7 @@ describe('Type.Scalar', () => {
         };
       },
       put: async function (body: unknown, contentType: 'application/json') {
+        expect(body).toBe('test');
         return {
           statusCode: 204,
         };
@@ -73,11 +76,13 @@ describe('Type.Scalar', () => {
         };
       },
       requestBody: async function (body: number, contentType: 'application/json') {
+        expect(body).toBe(0.33333);
         return {
           statusCode: 204,
         };
       },
       requestParameter: async function (options: { value: number }) {
+        expect(options.value).toBe(0.33333);
         return {
           statusCode: 204,
         };
@@ -92,11 +97,13 @@ describe('Type.Scalar', () => {
         };
       },
       requestBody: async function (body: number, contentType: 'application/json') {
+        expect(body).toBe(0.33333);
         return {
           statusCode: 204,
         };
       },
       requestParameter: async function (options: { value: number }) {
+        expect(options.value).toBe(0.33333);
         return {
           statusCode: 204,
         };
@@ -111,6 +118,7 @@ describe('Type.Scalar', () => {
         };
       },
       verify: async function (body: number, contentType: 'application/json') {
+        expect(body).toBe(0.3);
         return {
           statusCode: 204,
         };
@@ -125,6 +133,7 @@ describe('Type.Scalar', () => {
         };
       },
       verify: async function (body: number, contentType: 'application/json') {
+        expect(body).toBe(0.3);
         return {
           statusCode: 204,
         };

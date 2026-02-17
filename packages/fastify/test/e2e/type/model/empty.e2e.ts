@@ -19,6 +19,7 @@ describe('Type.Model.Empty', () => {
   it('passes all scenarios', async () => {
     const operations: Empty = {
       async putEmpty(body) {
+        expect(body).toEqual({});
         return {
           statusCode: 204,
         };
@@ -30,6 +31,7 @@ describe('Type.Model.Empty', () => {
         };
       },
       async postRoundTripEmpty(body) {
+        expect(body).toEqual({});
         return {
           statusCode: 200,
           body: {},

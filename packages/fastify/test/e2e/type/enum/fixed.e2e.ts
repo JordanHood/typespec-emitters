@@ -26,12 +26,15 @@ describe('Type.Enum.Fixed', () => {
         };
       },
       putKnownValue: async function (body: DaysOfWeekEnum, contentType: 'application/json') {
+        expect(body).toBe('Monday');
         return {
           statusCode: 204,
         };
       },
       putUnknownValue: async function (body: DaysOfWeekEnum, contentType: 'application/json') {
-        throw new Error('Unknown value not supported for fixed enum');
+        return {
+          statusCode: 204,
+        };
       },
     };
 

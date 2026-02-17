@@ -35,6 +35,7 @@ describe('Type.Enum.Extensible', () => {
         body: DaysOfWeekExtensibleEnum,
         contentType: 'application/json'
       ) {
+        expect(body).toBe('Monday');
         return {
           statusCode: 204,
         };
@@ -43,6 +44,7 @@ describe('Type.Enum.Extensible', () => {
         body: DaysOfWeekExtensibleEnum,
         contentType: 'application/json'
       ) {
+        expect(body).toBe('Weekend');
         return {
           statusCode: 204,
         };

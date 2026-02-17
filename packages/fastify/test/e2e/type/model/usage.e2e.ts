@@ -19,6 +19,7 @@ describe('Type.Model.Usage', () => {
   it('passes all scenarios', async () => {
     const operations: Usage = {
       async input(body) {
+        expect(body).toEqual({ requiredProp: 'example-value' });
         return {
           statusCode: 204,
         };
@@ -30,6 +31,7 @@ describe('Type.Model.Usage', () => {
         };
       },
       async inputAndOutput(body) {
+        expect(body).toEqual({ requiredProp: 'example-value' });
         return {
           statusCode: 200,
           body: { requiredProp: 'example-value' },
