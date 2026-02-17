@@ -6,7 +6,7 @@ import {
   ObjectExpression,
   ObjectProperty,
 } from '@alloy-js/typescript';
-import { Enum, LiteralType, Model, Scalar, Type } from '@typespec/compiler';
+import { Enum, LiteralType, Model, Scalar, Tuple, Type, Union } from '@typespec/compiler';
 import { Typekit } from '@typespec/compiler/typekit';
 import { useTsp } from '@typespec/emitter-framework';
 import { TypeBoxSchema } from './components/TypeBoxSchema.jsx';
@@ -26,8 +26,12 @@ export function typeboxBaseSchemaParts(type: Type): Children {
       return scalarBaseType($, type);
     case 'Model':
       return modelBaseType($, type);
+    case 'Union':
+      return unionBaseType(type);
     case 'Enum':
       return enumBaseType(type);
+    case 'Tuple':
+      return tupleBaseType(type);
     case 'ModelProperty':
       return typeboxBaseSchemaParts(type.type);
     case 'EnumMember':
@@ -168,7 +172,13 @@ function modelBaseType($: Typekit, type: Model): Children {
   }
 
   if (objectPart && recordPart) {
-    return typeboxCall('Intersect', <ArrayExpression>{objectPart}{recordPart}</ArrayExpression>);
+    return typeboxCall(
+      'Intersect',
+      <ArrayExpression>
+        {objectPart}
+        {recordPart}
+      </ArrayExpression>
+    );
   }
 
   const parts = objectPart ?? recordPart!;
@@ -186,6 +196,32 @@ function modelBaseType($: Typekit, type: Model): Children {
   }
 
   return parts;
+}
+
+function unionBaseType(type: Union): Children {
+  return typeboxCall(
+    'Union',
+    <ArrayExpression>
+      <For each={type.variants.values()} comma line>
+        {function (variant) {
+          return <TypeBoxSchema type={variant.type} nested />;
+        }}
+      </For>
+    </ArrayExpression>
+  );
+}
+
+function tupleBaseType(type: Tuple): Children {
+  return typeboxCall(
+    'Tuple',
+    <ArrayExpression>
+      <For each={type.values} comma line>
+        {function (item) {
+          return <TypeBoxSchema type={item} nested />;
+        }}
+      </For>
+    </ArrayExpression>
+  );
 }
 
 function enumBaseType(type: Enum): Children {

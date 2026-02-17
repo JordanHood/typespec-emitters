@@ -1,6 +1,6 @@
 import { Output as AlloyOutput, ContentOutputFile, render } from '@alloy-js/core';
 import { Children } from '@alloy-js/core/jsx-runtime';
-import { SourceFile } from '@alloy-js/typescript';
+import { createTSNamePolicy, SourceFile } from '@alloy-js/typescript';
 import { Program } from '@typespec/compiler';
 import {
   createTestHost as coreCreateTestHost,
@@ -13,7 +13,7 @@ import { TypeSpecTypeBoxTestLibrary } from '../src/testing/index.js';
 
 export function expectRender(program: Program, children: Children, expected: string) {
   const template = (
-    <Output program={program} externals={[typebox]}>
+    <Output program={program} namePolicy={createTSNamePolicy()} externals={[typebox]}>
       <SourceFile path="test.ts">{children}</SourceFile>
     </Output>
   );

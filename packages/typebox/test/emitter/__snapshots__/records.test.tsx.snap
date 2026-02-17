@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`record/dictionary emitter output > emits models with record properties 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const config = Type.Object({
+  settings: Type.Record(Type.String(), Type.String()),
+  counts: Type.Record(Type.String(), Type.Integer()),
+})
+export type Config = Static<typeof config>;;"
+`;
