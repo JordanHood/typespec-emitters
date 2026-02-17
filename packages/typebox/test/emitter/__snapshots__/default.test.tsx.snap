@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`emits scalar declarations 1`] = `
-"import { Type } from "typebox";
+"import { type Static, Type } from "typebox";
 
-export const myScalar = Type.String();"
+export const myScalar = Type.String()
+export type MyScalar = Static<typeof myScalar>;"
 `;

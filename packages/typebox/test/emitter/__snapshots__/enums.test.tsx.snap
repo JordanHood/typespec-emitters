@@ -1,0 +1,35 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`enum emitter output > emits numeric enum 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const priority = Type.Union([
+  Type.Literal(0),
+  Type.Literal(1),
+  Type.Literal(2)
+])
+export type Priority = Static<typeof priority>;"
+`;
+
+exports[`enum emitter output > emits string enum 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const direction = Type.Union([
+  Type.Literal("Up"),
+  Type.Literal("Down"),
+  Type.Literal("Left"),
+  Type.Literal("Right")
+])
+export type Direction = Static<typeof direction>;"
+`;
+
+exports[`enum emitter output > emits string enum with custom values 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const color = Type.Union([
+  Type.Literal("red"),
+  Type.Literal("green"),
+  Type.Literal("blue")
+])
+export type Color = Static<typeof color>;"
+`;

@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`model emitter output > emits empty model 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const empty = Type.Object({})
+export type Empty = Static<typeof empty>;"
+`;
+
+exports[`model emitter output > emits models with arrays, optional props, and nested references 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const address = Type.Object({
+  street: Type.String(),
+  city: Type.String(),
+  zip: Type.Optional(Type.String()),
+})
+export type Address = Static<typeof address>;
+
+export const user = Type.Object({
+  name: Type.String(),
+  age: Type.Optional(Type.Integer()),
+  tags: Type.Array(Type.String()),
+  address: address,
+})
+export type User = Static<typeof user>;"
+`;
