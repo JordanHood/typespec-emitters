@@ -231,13 +231,17 @@ describe('Type.Property.Nullable', () => {
     };
 
     const app = fastify({ logger: false });
-    app.addContentTypeParser('application/merge-patch+json', { parseAs: 'string' }, function (req, body, done) {
-      try {
-        done(null, JSON.parse(body as string));
-      } catch (err) {
-        done(err as Error, undefined);
+    app.addContentTypeParser(
+      'application/merge-patch+json',
+      { parseAs: 'string' },
+      function (req, body, done) {
+        try {
+          done(null, JSON.parse(body as string));
+        } catch (err) {
+          done(err as Error, undefined);
+        }
       }
-    });
+    );
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);

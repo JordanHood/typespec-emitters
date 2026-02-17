@@ -177,10 +177,7 @@ describe('Type.Property.Optionality', () => {
         return {
           statusCode: 200,
           body: {
-            property: [
-              'aGVsbG8sIHdvcmxkIQ==',
-              'aGVsbG8sIHdvcmxkIQ==',
-            ],
+            property: ['aGVsbG8sIHdvcmxkIQ==', 'aGVsbG8sIHdvcmxkIQ=='],
           },
         };
       },
