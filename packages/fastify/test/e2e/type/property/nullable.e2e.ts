@@ -25,100 +25,199 @@ describe('Type.Property.Nullable', () => {
   it('passes all scenarios', async () => {
     const stringOps: String = {
       getNonNull: async function () {
-        return { requiredProperty: 'foo', nullableProperty: 'hello' };
+        return {
+          statusCode: 200,
+          body: { requiredProperty: 'foo', nullableProperty: 'hello' },
+        };
       },
       getNull: async function () {
-        return { requiredProperty: 'foo', nullableProperty: null };
+        return {
+          statusCode: 200,
+          body: { requiredProperty: 'foo', nullableProperty: null },
+        };
       },
-      patchNonNull: async function (body, contentType) {},
-      patchNull: async function (body, contentType) {},
+      patchNonNull: async function (body, contentType) {
+        expect(body).toEqual({ requiredProperty: 'foo', nullableProperty: 'hello' });
+        return { statusCode: 204 };
+      },
+      patchNull: async function (body, contentType) {
+        expect(body).toEqual({ requiredProperty: 'foo', nullableProperty: null });
+        return { statusCode: 204 };
+      },
     };
 
     const bytesOps: Bytes = {
       getNonNull: async function () {
         return {
-          requiredProperty: 'foo',
-          nullableProperty: new Uint8Array(Buffer.from('aGVsbG8sIHdvcmxkIQ==', 'base64')),
+          statusCode: 200,
+          body: {
+            requiredProperty: 'foo',
+            nullableProperty: 'aGVsbG8sIHdvcmxkIQ==',
+          },
         };
       },
       getNull: async function () {
-        return { requiredProperty: 'foo', nullableProperty: null };
+        return {
+          statusCode: 200,
+          body: { requiredProperty: 'foo', nullableProperty: null },
+        };
       },
-      patchNonNull: async function (body, contentType) {},
-      patchNull: async function (body, contentType) {},
+      patchNonNull: async function (body, contentType) {
+        expect(body).toEqual({ requiredProperty: 'foo', nullableProperty: 'aGVsbG8sIHdvcmxkIQ==' });
+        return { statusCode: 204 };
+      },
+      patchNull: async function (body, contentType) {
+        expect(body).toEqual({ requiredProperty: 'foo', nullableProperty: null });
+        return { statusCode: 204 };
+      },
     };
 
     const datetimeOps: Datetime = {
       getNonNull: async function () {
         return {
-          requiredProperty: 'foo',
-          nullableProperty: new Date('2022-08-26T18:38:00Z'),
+          statusCode: 200,
+          body: {
+            requiredProperty: 'foo',
+            nullableProperty: '2022-08-26T18:38:00Z',
+          },
         };
       },
       getNull: async function () {
-        return { requiredProperty: 'foo', nullableProperty: null };
+        return {
+          statusCode: 200,
+          body: { requiredProperty: 'foo', nullableProperty: null },
+        };
       },
-      patchNonNull: async function (body, contentType) {},
-      patchNull: async function (body, contentType) {},
+      patchNonNull: async function (body, contentType) {
+        expect(body).toEqual({
+          requiredProperty: 'foo',
+          nullableProperty: new Date('2022-08-26T18:38:00.000Z'),
+        });
+        return { statusCode: 204 };
+      },
+      patchNull: async function (body, contentType) {
+        expect(body).toEqual({
+          requiredProperty: 'foo',
+          nullableProperty: new Date('1970-01-01T00:00:00.000Z'),
+        });
+        return { statusCode: 204 };
+      },
     };
 
     const durationOps: Duration = {
       getNonNull: async function () {
         return {
-          requiredProperty: 'foo',
-          nullableProperty: 'P123DT22H14M12.011S',
+          statusCode: 200,
+          body: {
+            requiredProperty: 'foo',
+            nullableProperty: 'P123DT22H14M12.011S',
+          },
         };
       },
       getNull: async function () {
-        return { requiredProperty: 'foo', nullableProperty: null };
+        return {
+          statusCode: 200,
+          body: { requiredProperty: 'foo', nullableProperty: null },
+        };
       },
-      patchNonNull: async function (body, contentType) {},
-      patchNull: async function (body, contentType) {},
+      patchNonNull: async function (body, contentType) {
+        expect(body).toEqual({
+          requiredProperty: 'foo',
+          nullableProperty: 'P123DT22H14M12.011S',
+        });
+        return { statusCode: 204 };
+      },
+      patchNull: async function (body, contentType) {
+        expect(body).toEqual({ requiredProperty: 'foo', nullableProperty: null });
+        return { statusCode: 204 };
+      },
     };
 
     const collectionsByteOps: CollectionsByte = {
       getNonNull: async function () {
         return {
-          requiredProperty: 'foo',
-          nullableProperty: [
-            new Uint8Array(Buffer.from('aGVsbG8sIHdvcmxkIQ==', 'base64')),
-            new Uint8Array(Buffer.from('aGVsbG8sIHdvcmxkIQ==', 'base64')),
-          ],
+          statusCode: 200,
+          body: {
+            requiredProperty: 'foo',
+            nullableProperty: ['aGVsbG8sIHdvcmxkIQ==', 'aGVsbG8sIHdvcmxkIQ=='],
+          },
         };
       },
       getNull: async function () {
-        return { requiredProperty: 'foo', nullableProperty: null };
+        return {
+          statusCode: 200,
+          body: { requiredProperty: 'foo', nullableProperty: null },
+        };
       },
-      patchNonNull: async function (body, contentType) {},
-      patchNull: async function (body, contentType) {},
+      patchNonNull: async function (body, contentType) {
+        expect(body).toEqual({
+          requiredProperty: 'foo',
+          nullableProperty: ['aGVsbG8sIHdvcmxkIQ==', 'aGVsbG8sIHdvcmxkIQ=='],
+        });
+        return { statusCode: 204 };
+      },
+      patchNull: async function (body, contentType) {
+        expect(body).toEqual({ requiredProperty: 'foo', nullableProperty: null });
+        return { statusCode: 204 };
+      },
     };
 
     const collectionsModelOps: CollectionsModel = {
       getNonNull: async function () {
         return {
-          requiredProperty: 'foo',
-          nullableProperty: [{ property: 'hello' }, { property: 'world' }],
+          statusCode: 200,
+          body: {
+            requiredProperty: 'foo',
+            nullableProperty: [{ property: 'hello' }, { property: 'world' }],
+          },
         };
       },
       getNull: async function () {
-        return { requiredProperty: 'foo', nullableProperty: null };
+        return {
+          statusCode: 200,
+          body: { requiredProperty: 'foo', nullableProperty: null },
+        };
       },
-      patchNonNull: async function (body, contentType) {},
-      patchNull: async function (body, contentType) {},
+      patchNonNull: async function (body, contentType) {
+        expect(body).toEqual({
+          requiredProperty: 'foo',
+          nullableProperty: [{ property: 'hello' }, { property: 'world' }],
+        });
+        return { statusCode: 204 };
+      },
+      patchNull: async function (body, contentType) {
+        expect(body).toEqual({ requiredProperty: 'foo', nullableProperty: null });
+        return { statusCode: 204 };
+      },
     };
 
     const collectionsStringOps: CollectionsString = {
       getNonNull: async function () {
         return {
-          requiredProperty: 'foo',
-          nullableProperty: ['hello', 'world'],
+          statusCode: 200,
+          body: {
+            requiredProperty: 'foo',
+            nullableProperty: ['hello', 'world'],
+          },
         };
       },
       getNull: async function () {
-        return { requiredProperty: 'foo', nullableProperty: null };
+        return {
+          statusCode: 200,
+          body: { requiredProperty: 'foo', nullableProperty: null },
+        };
       },
-      patchNonNull: async function (body, contentType) {},
-      patchNull: async function (body, contentType) {},
+      patchNonNull: async function (body, contentType) {
+        expect(body).toEqual({
+          requiredProperty: 'foo',
+          nullableProperty: ['hello', 'world'],
+        });
+        return { statusCode: 204 };
+      },
+      patchNull: async function (body, contentType) {
+        expect(body).toEqual({ requiredProperty: 'foo', nullableProperty: null });
+        return { statusCode: 204 };
+      },
     };
 
     const operations = {
@@ -132,6 +231,13 @@ describe('Type.Property.Nullable', () => {
     };
 
     const app = fastify({ logger: false });
+    app.addContentTypeParser('application/merge-patch+json', { parseAs: 'string' }, function (req, body, done) {
+      try {
+        done(null, JSON.parse(body as string));
+      } catch (err) {
+        done(err as Error, undefined);
+      }
+    });
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);

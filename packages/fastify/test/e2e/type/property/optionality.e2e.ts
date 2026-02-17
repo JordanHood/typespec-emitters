@@ -46,14 +46,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: 'hello' });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -62,7 +60,7 @@ describe('Type.Property.Optionality', () => {
         return {
           statusCode: 200,
           body: {
-            property: new Uint8Array(Buffer.from('aGVsbG8sIHdvcmxkIQ==', 'base64')),
+            property: 'aGVsbG8sIHdvcmxkIQ==',
           },
         };
       },
@@ -73,14 +71,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: 'aGVsbG8sIHdvcmxkIQ==' });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -88,7 +84,7 @@ describe('Type.Property.Optionality', () => {
       getAll: async function () {
         return {
           statusCode: 200,
-          body: { property: new Date('2022-08-26T18:38:00Z') },
+          body: { property: '2022-08-26T18:38:00Z' as unknown as Date },
         };
       },
       getDefault: async function () {
@@ -98,14 +94,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: new Date('2022-08-26T18:38:00.000Z') });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -123,14 +117,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: 'P123DT22H14M12.011S' });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -148,14 +140,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: new Date('2022-12-12T00:00:00.000Z') });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -173,14 +163,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: '13:06:12' });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -190,8 +178,8 @@ describe('Type.Property.Optionality', () => {
           statusCode: 200,
           body: {
             property: [
-              new Uint8Array(Buffer.from('aGVsbG8sIHdvcmxkIQ==', 'base64')),
-              new Uint8Array(Buffer.from('aGVsbG8sIHdvcmxkIQ==', 'base64')),
+              'aGVsbG8sIHdvcmxkIQ==',
+              'aGVsbG8sIHdvcmxkIQ==',
             ],
           },
         };
@@ -203,14 +191,14 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({
+          property: ['aGVsbG8sIHdvcmxkIQ==', 'aGVsbG8sIHdvcmxkIQ=='],
+        });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -228,14 +216,14 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({
+          property: [{ property: 'hello' }, { property: 'world' }],
+        });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -253,14 +241,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: 'hello' });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -278,14 +264,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: 1 });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -303,14 +287,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: 1.25 });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -328,14 +310,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: true });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -353,14 +333,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: 'world' });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -378,14 +356,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: 2 });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -403,14 +379,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ property: 2.375 });
+        return { statusCode: 204 };
       },
       putDefault: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({});
+        return { statusCode: 204 };
       },
     };
 
@@ -428,14 +402,12 @@ describe('Type.Property.Optionality', () => {
         };
       },
       putAll: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ optionalProperty: 'hello', requiredProperty: 42 });
+        return { statusCode: 204 };
       },
       putRequiredOnly: async function (body) {
-        return {
-          statusCode: 204,
-        };
+        expect(body).toEqual({ requiredProperty: 42 });
+        return { statusCode: 204 };
       },
     };
 
@@ -462,7 +434,7 @@ describe('Type.Property.Optionality', () => {
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('type/property/optionality', baseUrl);
+    const { status } = await runScenario('type/property/optional', baseUrl);
     expect(status).toBe('pass');
   });
 });

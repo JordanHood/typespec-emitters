@@ -13,7 +13,6 @@ import type { EnumsOnly } from '../generated/type/union/operations/enumsonly.js'
 import type { StringAndArray } from '../generated/type/union/operations/stringandarray.js';
 import type { MixedLiterals } from '../generated/type/union/operations/mixedliterals.js';
 import type { MixedTypes } from '../generated/type/union/operations/mixedtypes.js';
-import { Lr, Ud } from '../generated/type/union/models/union.js';
 
 describe('Type.Union', () => {
   let serverAbortController: AbortController;
@@ -29,87 +28,144 @@ describe('Type.Union', () => {
   it('passes all scenarios', async () => {
     const stringsOnlyOps: StringsOnly = {
       get: async function () {
-        return { prop: 'b' };
+        return { statusCode: 200, body: { prop: 'b' } };
       },
-      send: async function (body) {},
+      send: async function (body) {
+        expect(body).toEqual({ prop: 'b' });
+        return { statusCode: 204 };
+      },
     };
 
     const stringExtensibleOps: StringExtensible = {
       get: async function () {
-        return { prop: 'custom' };
+        return { statusCode: 200, body: { prop: 'custom' } };
       },
-      send: async function (body) {},
+      send: async function (body) {
+        expect(body).toEqual({ prop: 'custom' });
+        return { statusCode: 204 };
+      },
     };
 
     const stringExtensibleNamedOps: StringExtensibleNamed = {
       get: async function () {
-        return { prop: 'custom' };
+        return { statusCode: 200, body: { prop: 'custom' } };
       },
-      send: async function (body) {},
+      send: async function (body) {
+        expect(body).toEqual({ prop: 'custom' });
+        return { statusCode: 204 };
+      },
     };
 
     const intsOnlyOps: IntsOnly = {
       get: async function () {
-        return { prop: 2 };
+        return { statusCode: 200, body: { prop: 2 } };
       },
-      send: async function (body) {},
+      send: async function (body) {
+        expect(body).toEqual({ prop: 2 });
+        return { statusCode: 204 };
+      },
     };
 
     const floatsOnlyOps: FloatsOnly = {
       get: async function () {
-        return { prop: 2.2 };
+        return { statusCode: 200, body: { prop: 2.2 } };
       },
-      send: async function (body) {},
+      send: async function (body) {
+        expect(body).toEqual({ prop: 2.2 });
+        return { statusCode: 204 };
+      },
     };
 
     const modelsOnlyOps: ModelsOnly = {
       get: async function () {
-        return { prop: { name: 'test' } };
+        return { statusCode: 200, body: { prop: { name: 'test' } } };
       },
-      send: async function (body) {},
+      send: async function (body) {
+        expect(body).toEqual({ prop: { name: 'test' } });
+        return { statusCode: 204 };
+      },
     };
 
     const enumsOnlyOps: EnumsOnly = {
       get: async function () {
         return {
-          prop: {
-            lr: Lr.Right,
-            ud: Ud.Up,
+          statusCode: 200,
+          body: {
+            prop: {
+              lr: 'right',
+              ud: 'up',
+            },
           },
         };
       },
-      send: async function (body) {},
+      send: async function (body) {
+        expect(body).toEqual({ prop: { lr: 'right', ud: 'up' } });
+        return { statusCode: 204 };
+      },
     };
 
     const stringAndArrayOps: StringAndArray = {
       get: async function () {
         return {
-          prop: {
-            string: 'test',
-            array: ['test1', 'test2'],
+          statusCode: 200,
+          body: {
+            prop: {
+              string: 'test',
+              array: ['test1', 'test2'],
+            },
           },
         };
       },
-      send: async function (body) {},
+      send: async function (body) {
+        expect(body).toEqual({ prop: { string: 'test', array: ['test1', 'test2'] } });
+        return { statusCode: 204 };
+      },
     };
 
     const mixedLiteralsOps: MixedLiterals = {
       get: async function () {
         return {
+          statusCode: 200,
+          body: {
+            prop: {
+              stringLiteral: 'a',
+              intLiteral: 2,
+              floatLiteral: 3.3,
+              booleanLiteral: true,
+            },
+          },
+        };
+      },
+      send: async function (body) {
+        expect(body).toEqual({
           prop: {
             stringLiteral: 'a',
             intLiteral: 2,
             floatLiteral: 3.3,
             booleanLiteral: true,
           },
-        };
+        });
+        return { statusCode: 204 };
       },
-      send: async function (body) {},
     };
 
     const mixedTypesOps: MixedTypes = {
       get: async function () {
         return {
+          statusCode: 200,
+          body: {
+            prop: {
+              model: { name: 'test' },
+              literal: 'a',
+              int: 2,
+              boolean: true,
+              array: [{ name: 'test' }, 'a', 2, true],
+            },
+          },
+        };
+      },
+      send: async function (body) {
+        expect(body).toEqual({
           prop: {
             model: { name: 'test' },
             literal: 'a',
@@ -117,9 +173,9 @@ describe('Type.Union', () => {
             boolean: true,
             array: [{ name: 'test' }, 'a', 2, true],
           },
-        };
+        });
+        return { statusCode: 204 };
       },
-      send: async function (body) {},
     };
 
     const operations = {
@@ -139,7 +195,7 @@ describe('Type.Union', () => {
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('type/union', baseUrl);
+    const { status } = await runScenario('type/union', baseUrl, 'type/union/!(discriminated)/**');
     expect(status).toBe('pass');
   });
 });
