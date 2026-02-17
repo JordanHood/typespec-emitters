@@ -2,7 +2,7 @@ import { For, refkey } from '@alloy-js/core';
 import * as ts from '@alloy-js/typescript';
 import type { Type } from '@typespec/compiler';
 import { ZodSchemaDeclaration, zod } from 'typespec-zod';
-import { useTsp } from '@typespec/emitter-framework';
+import { useTsp, SCCSet, typeDependencyConnector } from '@typespec/emitter-framework';
 
 export interface ZodSchemasAndInferredTypesProps {
   types: Type[];
@@ -18,12 +18,21 @@ function isDeclarationType(type: Type): type is DeclarationType {
   );
 }
 
+function sortTypesByDependency(types: DeclarationType[]): DeclarationType[] {
+  const sccSet = new SCCSet<Type>(typeDependencyConnector);
+  sccSet.addAll(types);
+  return sccSet.items.filter(isDeclarationType).filter(function (t) {
+    return types.includes(t);
+  });
+}
+
 export function ZodSchemasAndInferredTypes(props: ZodSchemasAndInferredTypesProps) {
   const { $ } = useTsp();
   const declarationTypes = props.types.filter(isDeclarationType);
+  const sortedTypes = sortTypesByDependency(declarationTypes);
 
   return (
-    <For each={declarationTypes} doubleHardline>
+    <For each={sortedTypes} doubleHardline>
       {function (type) {
         const name = $.type.getPlausibleName(type);
         const schemaName = name.charAt(0).toLowerCase() + name.slice(1);

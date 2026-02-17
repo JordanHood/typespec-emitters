@@ -7,7 +7,8 @@ const packageRoot = resolve(__dirname, '../..');
 
 export async function runScenario(
   scenario: string,
-  baseUrl: string
+  baseUrl: string,
+  filter?: string
 ): Promise<{ status: 'pass' | 'fail' }> {
   return new Promise((resolve, reject) => {
     const child = spawn(
@@ -17,7 +18,7 @@ export async function runScenario(
         'knock',
         './node_modules/@typespec/http-specs/specs',
         '--filter',
-        `${scenario}/**/*`,
+        filter ?? `${scenario}/**/*`,
         '--baseUrl',
         baseUrl,
       ],

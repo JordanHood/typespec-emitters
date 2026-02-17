@@ -48,7 +48,7 @@ describe('Type.Array', () => {
       get: async function () {
         return {
           statusCode: 200,
-          body: [BigInt('9223372036854775807'), BigInt('-9223372036854775807')],
+          body: [Number.MAX_SAFE_INTEGER, Number.MIN_SAFE_INTEGER] as unknown as Array<bigint>,
         };
       },
       put: async function (body: Array<bigint>) {
@@ -104,7 +104,7 @@ describe('Type.Array', () => {
       get: async function () {
         return {
           statusCode: 200,
-          body: [new Date('2022-08-26T18:38:00Z')],
+          body: ['2022-08-26T18:38:00Z'] as unknown as Array<Date>,
         };
       },
       put: async function (body: Array<Date>) {

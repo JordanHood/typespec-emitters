@@ -18,15 +18,11 @@ versioning/
 parameters/collection-format
 
 # Type tests with known typespec-zod limitations
-# These require fixes in the upstream typespec-zod library:
-# - Circular/recursive types need z.lazy()
-# - Enum forward references need reordering
-# - Record types need .extend() instead of .merge()
 # - Description string escaping issues
-type/array
-type/dictionary
-type/union
-type/property/nullable
 type/property/additional-properties
 type/property/value-types
-type/property/optionality
+
+# Blocked: Zod does not support recursive/circular model references
+# Will be unblocked by TypeBox integration
+type/array
+type/dictionary
