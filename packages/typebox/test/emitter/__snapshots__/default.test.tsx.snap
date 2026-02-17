@@ -4,5 +4,5 @@ exports[`emits scalar declarations 1`] = `
 "import { type Static, Type } from "typebox";
 
 export const myScalar = Type.String()
-export type MyScalar = Static<typeof myScalar>;;"
+export type MyScalar = Static<typeof myScalar>;"
 `;

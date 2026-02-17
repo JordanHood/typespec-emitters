@@ -7,5 +7,5 @@ export const config = Type.Object({
   settings: Type.Record(Type.String(), Type.String()),
   counts: Type.Record(Type.String(), Type.Integer()),
 })
-export type Config = Static<typeof config>;;"
+export type Config = Static<typeof config>;"
 `;

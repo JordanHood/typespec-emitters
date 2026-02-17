@@ -17,10 +17,8 @@ export async function $onEmit(context: EmitContext) {
       <ts.SourceFile path="models.ts">
         <ay.For
           each={types}
-          ender=";"
           joiner={
             <>
-              ;
               <hbr />
               <hbr />
             </>

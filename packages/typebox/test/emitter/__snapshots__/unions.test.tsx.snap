@@ -8,7 +8,7 @@ export const profile = Type.Object({
   bio: Type.Union([Type.String(), Type.Null()]),
   age: Type.Optional(Type.Union([Type.Integer(), Type.Null()])),
 })
-export type Profile = Static<typeof profile>;;"
+export type Profile = Static<typeof profile>;"
 `;
 
 exports[`union and nullable emitter output > emits named union types 1`] = `
@@ -18,8 +18,8 @@ export const status = Type.Union([
   Type.Literal("active"),
   Type.Literal("inactive")
 ])
-export type Status = Static<typeof status>;;
+export type Status = Static<typeof status>;
 
 export const result = Type.Union([Type.String(), Type.Integer()])
-export type Result = Static<typeof result>;;"
+export type Result = Static<typeof result>;"
 `;
