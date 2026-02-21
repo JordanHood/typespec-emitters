@@ -16,7 +16,7 @@ describe('unions', () => {
     expectRender(
       runner.program,
       <TypeBoxSchema type={MyUnion} />,
-      'Type.Union([Type.String(), Type.Integer()])'
+      'Type.Union([\n  Type.String(),\n  Type.Integer({\n    minimum: -2147483648,\n    maximum: 2147483647\n  })\n])'
     );
   });
 

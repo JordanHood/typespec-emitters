@@ -5,7 +5,13 @@ exports[`record/dictionary emitter output > emits models with record properties 
 
 export const config = Type.Object({
   settings: Type.Record(Type.String(), Type.String()),
-  counts: Type.Record(Type.String(), Type.Integer()),
+  counts: Type.Record(
+    Type.String(),
+    Type.Integer({
+      minimum: -2147483648,
+      maximum: 2147483647
+    })
+  ),
 })
 export type Config = Static<typeof config>;"
 `;

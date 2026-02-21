@@ -30,7 +30,7 @@ describe('optionality', () => {
     expectRender(
       runner.program,
       <TypeBoxSchema type={OptInt} />,
-      'Type.Object({\n  count: Type.Optional(Type.Integer()),\n})'
+      'Type.Object({\n  count: Type.Optional(Type.Integer({\n    minimum: -2147483648,\n    maximum: 2147483647\n  })),\n})'
     );
   });
 
@@ -62,7 +62,7 @@ describe('optionality', () => {
     expectRender(
       runner.program,
       <TypeBoxSchema type={MixedModel} />,
-      'Type.Object({\n  required: Type.String(),\n  optional: Type.Optional(Type.Integer()),\n  alsoRequired: Type.Boolean(),\n})'
+      'Type.Object({\n  required: Type.String(),\n  optional: Type.Optional(Type.Integer({\n    minimum: -2147483648,\n    maximum: 2147483647\n  })),\n  alsoRequired: Type.Boolean(),\n})'
     );
   });
 });
