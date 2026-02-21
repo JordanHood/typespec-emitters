@@ -13,11 +13,12 @@ export interface TypeBoxSchemaProps {
 export function TypeBoxSchema(props: TypeBoxSchemaProps): Children {
   const { $ } = useTsp();
 
-  if (!props.nested) {
-    return typeboxBaseSchemaParts(props.type);
-  }
+  const member = $.modelProperty.is(props.type) ? props.type : undefined;
+  const type = member ? member.type : props.type;
 
-  const type = $.modelProperty.is(props.type) ? props.type.type : props.type;
+  if (!props.nested) {
+    return typeboxBaseSchemaParts(type, member);
+  }
 
   if (shouldReference($.program, type)) {
     return (
@@ -27,5 +28,5 @@ export function TypeBoxSchema(props: TypeBoxSchemaProps): Children {
     );
   }
 
-  return typeboxBaseSchemaParts(type);
+  return typeboxBaseSchemaParts(type, member);
 }

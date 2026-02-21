@@ -30,7 +30,7 @@ describe('arrays', () => {
     expectRender(
       runner.program,
       <TypeBoxSchema type={numsProp.type} />,
-      'Type.Array(Type.Integer())'
+      'Type.Array(Type.Integer({\n  minimum: -2147483648,\n  maximum: 2147483647\n}))'
     );
   });
 

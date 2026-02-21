@@ -6,7 +6,13 @@ exports[`union and nullable emitter output > emits model with nullable propertie
 export const profile = Type.Object({
   name: Type.String(),
   bio: Type.Union([Type.String(), Type.Null()]),
-  age: Type.Optional(Type.Union([Type.Integer(), Type.Null()])),
+  age: Type.Optional(Type.Union([
+    Type.Integer({
+      minimum: -2147483648,
+      maximum: 2147483647
+    }),
+    Type.Null()
+  ])),
 })
 export type Profile = Static<typeof profile>;"
 `;
@@ -20,6 +26,12 @@ export const status = Type.Union([
 ])
 export type Status = Static<typeof status>;
 
-export const result = Type.Union([Type.String(), Type.Integer()])
+export const result = Type.Union([
+  Type.String(),
+  Type.Integer({
+    minimum: -2147483648,
+    maximum: 2147483647
+  })
+])
 export type Result = Static<typeof result>;"
 `;

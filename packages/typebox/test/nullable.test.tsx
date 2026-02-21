@@ -30,7 +30,7 @@ describe('nullable', () => {
     expectRender(
       runner.program,
       <TypeBoxSchema type={NullInt} />,
-      'Type.Object({\n  count: Type.Union([Type.Integer(), Type.Null()]),\n})'
+      'Type.Object({\n  count: Type.Union([\n    Type.Integer({\n      minimum: -2147483648,\n      maximum: 2147483647\n    }),\n    Type.Null()\n  ]),\n})'
     );
   });
 

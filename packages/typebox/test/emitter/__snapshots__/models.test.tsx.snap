@@ -19,7 +19,10 @@ export type Address = Static<typeof address>;
 
 export const user = Type.Object({
   name: Type.String(),
-  age: Type.Optional(Type.Integer()),
+  age: Type.Optional(Type.Integer({
+    minimum: -2147483648,
+    maximum: 2147483647
+  })),
   tags: Type.Array(Type.String()),
   address: address,
 })

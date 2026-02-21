@@ -6,13 +6,23 @@ import {
   ObjectExpression,
   ObjectProperty,
 } from '@alloy-js/typescript';
-import { Enum, LiteralType, Model, Scalar, Tuple, Type, Union } from '@typespec/compiler';
+import {
+  Enum,
+  LiteralType,
+  Model,
+  ModelProperty,
+  Scalar,
+  Tuple,
+  Type,
+  Union,
+} from '@typespec/compiler';
 import { Typekit } from '@typespec/compiler/typekit';
 import { useTsp } from '@typespec/emitter-framework';
 import { TypeBoxSchema } from './components/TypeBoxSchema.jsx';
+import { buildTypeboxOpts } from './typeboxConstraints.jsx';
 import { isRecord, refkeySym, shouldReference, typeboxCall } from './utils.jsx';
 
-export function typeboxBaseSchemaParts(type: Type): Children {
+export function typeboxBaseSchemaParts(type: Type, member?: ModelProperty): Children {
   const { $ } = useTsp();
 
   switch (type.kind) {
@@ -21,11 +31,11 @@ export function typeboxBaseSchemaParts(type: Type): Children {
     case 'String':
     case 'Number':
     case 'Boolean':
-      return literalBaseType($, type);
+      return literalBaseType($, type, member);
     case 'Scalar':
-      return scalarBaseType($, type);
+      return scalarBaseType($, type, member);
     case 'Model':
-      return modelBaseType($, type);
+      return modelBaseType($, type, member);
     case 'Union':
       return unionBaseType(type);
     case 'Enum':
@@ -33,7 +43,7 @@ export function typeboxBaseSchemaParts(type: Type): Children {
     case 'Tuple':
       return tupleBaseType(type);
     case 'ModelProperty':
-      return typeboxBaseSchemaParts(type.type);
+      return typeboxBaseSchemaParts(type.type, type);
     case 'EnumMember':
       return type.value
         ? literalBaseType($, $.literal.create(type.value))
@@ -43,7 +53,7 @@ export function typeboxBaseSchemaParts(type: Type): Children {
   }
 }
 
-function literalBaseType($: Typekit, type: LiteralType): Children {
+function literalBaseType($: Typekit, type: LiteralType, member?: ModelProperty): Children {
   switch (type.kind) {
     case 'String':
       return typeboxCall('Literal', `"${type.value}"`);
@@ -53,15 +63,7 @@ function literalBaseType($: Typekit, type: LiteralType): Children {
   }
 }
 
-function formatOpts(format: string): Children {
-  return (
-    <ObjectExpression>
-      <ObjectProperty name="format">{`"${format}"`}</ObjectProperty>
-    </ObjectExpression>
-  );
-}
-
-function scalarBaseType($: Typekit, type: Scalar): Children {
+function scalarBaseType($: Typekit, type: Scalar, member?: ModelProperty): Children {
   if (type.baseScalar && shouldReference($.program, type.baseScalar)) {
     return (
       <MemberExpression>
@@ -71,67 +73,83 @@ function scalarBaseType($: Typekit, type: Scalar): Children {
   }
 
   if ($.scalar.extendsBoolean(type)) {
-    return typeboxCall('Boolean');
+    const opts = buildTypeboxOpts($, type, { member });
+    return typeboxCall('Boolean', ...(opts ? [opts] : []));
   } else if ($.scalar.extendsNumeric(type)) {
+    const opts = buildTypeboxOpts($, type, { member });
     if ($.scalar.extendsInteger(type)) {
       if (
         $.scalar.extendsInt32(type) ||
         $.scalar.extendsUint32(type) ||
         $.scalar.extendsSafeint(type)
       ) {
-        return typeboxCall('Integer');
+        return typeboxCall('Integer', ...(opts ? [opts] : []));
       } else {
         return typeboxCall('BigInt');
       }
     } else {
-      return typeboxCall('Number');
+      return typeboxCall('Number', ...(opts ? [opts] : []));
     }
   } else if ($.scalar.extendsString(type)) {
     if ($.scalar.extendsUrl(type)) {
-      return typeboxCall('String', formatOpts('uri'));
+      const opts = buildTypeboxOpts($, type, { member, format: 'uri' });
+      return typeboxCall('String', ...(opts ? [opts] : []));
     }
-    return typeboxCall('String');
+    const opts = buildTypeboxOpts($, type, { member });
+    return typeboxCall('String', ...(opts ? [opts] : []));
   } else if ($.scalar.extendsBytes(type)) {
     return typeboxCall('Any');
   } else if ($.scalar.extendsPlainDate(type)) {
-    return typeboxCall('Date');
+    const opts = buildTypeboxOpts($, type, { member, format: 'date' });
+    return typeboxCall('String', ...(opts ? [opts] : []));
   } else if ($.scalar.extendsPlainTime(type)) {
-    return typeboxCall('String', formatOpts('time'));
+    const opts = buildTypeboxOpts($, type, { member, format: 'time' });
+    return typeboxCall('String', ...(opts ? [opts] : []));
   } else if ($.scalar.extendsUtcDateTime(type)) {
     const encoding = $.scalar.getEncoding(type);
     if (encoding === undefined) {
-      return typeboxCall('Date');
+      const opts = buildTypeboxOpts($, type, { member, format: 'date-time' });
+      return typeboxCall('String', ...(opts ? [opts] : []));
     } else if (encoding.encoding === 'unixTimestamp') {
-      return scalarBaseType($, encoding.type);
+      return scalarBaseType($, encoding.type, member);
     } else if (encoding.encoding === 'rfc3339') {
-      return typeboxCall('String', formatOpts('date-time'));
+      const opts = buildTypeboxOpts($, type, { member, format: 'date-time' });
+      return typeboxCall('String', ...(opts ? [opts] : []));
     } else {
-      return scalarBaseType($, encoding.type);
+      return scalarBaseType($, encoding.type, member);
     }
   } else if ($.scalar.extendsOffsetDateTime(type)) {
     const encoding = $.scalar.getEncoding(type);
     if (encoding === undefined) {
-      return typeboxCall('Date');
+      const opts = buildTypeboxOpts($, type, { member, format: 'date-time' });
+      return typeboxCall('String', ...(opts ? [opts] : []));
     } else if (encoding.encoding === 'rfc3339') {
-      return typeboxCall('String', formatOpts('date-time'));
+      const opts = buildTypeboxOpts($, type, { member, format: 'date-time' });
+      return typeboxCall('String', ...(opts ? [opts] : []));
     } else {
-      return scalarBaseType($, encoding.type);
+      return scalarBaseType($, encoding.type, member);
     }
   } else if ($.scalar.extendsDuration(type)) {
     const encoding = $.scalar.getEncoding(type);
     if (encoding === undefined || encoding.encoding === 'ISO8601') {
-      return typeboxCall('String', formatOpts('duration'));
+      const opts = buildTypeboxOpts($, type, { member, format: 'duration' });
+      return typeboxCall('String', ...(opts ? [opts] : []));
     } else {
-      return scalarBaseType($, encoding.type);
+      return scalarBaseType($, encoding.type, member);
     }
   } else {
     return typeboxCall('Any');
   }
 }
 
-function modelBaseType($: Typekit, type: Model): Children {
+function modelBaseType($: Typekit, type: Model, member?: ModelProperty): Children {
   if ($.array.is(type)) {
-    return typeboxCall('Array', <TypeBoxSchema type={type.indexer!.value} nested />);
+    const opts = buildTypeboxOpts($, type, { member });
+    return typeboxCall(
+      'Array',
+      <TypeBoxSchema type={type.indexer!.value} nested />,
+      ...(opts ? [opts] : [])
+    );
   }
 
   let recordPart;

@@ -30,7 +30,7 @@ describe('models', () => {
     expectRender(
       runner.program,
       <TypeBoxSchema type={SimpleModel} />,
-      'Type.Object({\n  name: Type.String(),\n  age: Type.Integer(),\n})'
+      'Type.Object({\n  name: Type.String(),\n  age: Type.Integer({\n    minimum: -2147483648,\n    maximum: 2147483647\n  }),\n})'
     );
   });
 
@@ -46,7 +46,7 @@ describe('models', () => {
     expectRender(
       runner.program,
       <TypeBoxSchema type={OptModel} />,
-      'Type.Object({\n  required: Type.String(),\n  optional: Type.Optional(Type.Integer()),\n})'
+      'Type.Object({\n  required: Type.String(),\n  optional: Type.Optional(Type.Integer({\n    minimum: -2147483648,\n    maximum: 2147483647\n  })),\n})'
     );
   });
 

@@ -44,9 +44,21 @@ describe('numerics', () => {
         }
       `)) as Record<string, ModelProperty>;
 
-    expectRender(runner.program, <TypeBoxSchema type={int8Prop.type} />, 'Type.Integer()');
-    expectRender(runner.program, <TypeBoxSchema type={int16Prop.type} />, 'Type.Integer()');
-    expectRender(runner.program, <TypeBoxSchema type={int32Prop.type} />, 'Type.Integer()');
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={int8Prop.type} />,
+      'Type.Integer({\n  minimum: -128,\n  maximum: 127\n})'
+    );
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={int16Prop.type} />,
+      'Type.Integer({\n  minimum: -32768,\n  maximum: 32767\n})'
+    );
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={int32Prop.type} />,
+      'Type.Integer({\n  minimum: -2147483648,\n  maximum: 2147483647\n})'
+    );
     expectRender(runner.program, <TypeBoxSchema type={int64Prop.type} />, 'Type.BigInt()');
   });
 
@@ -62,11 +74,27 @@ describe('numerics', () => {
       }
     `)) as Record<string, ModelProperty>;
 
-    expectRender(runner.program, <TypeBoxSchema type={uint8Prop.type} />, 'Type.Integer()');
-    expectRender(runner.program, <TypeBoxSchema type={uint16Prop.type} />, 'Type.Integer()');
-    expectRender(runner.program, <TypeBoxSchema type={uint32Prop.type} />, 'Type.Integer()');
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={uint8Prop.type} />,
+      'Type.Integer({\n  minimum: 0,\n  maximum: 255\n})'
+    );
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={uint16Prop.type} />,
+      'Type.Integer({\n  minimum: 0,\n  maximum: 65535\n})'
+    );
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={uint32Prop.type} />,
+      'Type.Integer({\n  minimum: 0,\n  maximum: 4294967295\n})'
+    );
     expectRender(runner.program, <TypeBoxSchema type={uint64Prop.type} />, 'Type.BigInt()');
-    expectRender(runner.program, <TypeBoxSchema type={safeintProp.type} />, 'Type.Integer()');
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={safeintProp.type} />,
+      'Type.Integer({\n  minimum: -9007199254740991,\n  maximum: 9007199254740991\n})'
+    );
   });
 
   it('works with floats', async () => {
@@ -79,7 +107,11 @@ describe('numerics', () => {
         }
       `)) as Record<string, ModelProperty>;
 
-    expectRender(runner.program, <TypeBoxSchema type={float32Prop.type} />, 'Type.Number()');
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={float32Prop.type} />,
+      'Type.Number({\n  minimum: -3.4028235e+38,\n  maximum: 3.4028235e+38\n})'
+    );
     expectRender(runner.program, <TypeBoxSchema type={float64Prop.type} />, 'Type.Number()');
     expectRender(runner.program, <TypeBoxSchema type={floatProp.type} />, 'Type.Number()');
   });
@@ -121,14 +153,26 @@ it('works with date things', async () => {
       }
     `)) as Record<string, ModelProperty>;
 
-  expectRender(runner.program, <TypeBoxSchema type={plainDateProp.type} />, 'Type.Date()');
+  expectRender(
+    runner.program,
+    <TypeBoxSchema type={plainDateProp.type} />,
+    'Type.String({\n  format: "date"\n})'
+  );
   expectRender(
     runner.program,
     <TypeBoxSchema type={plainTimeProp.type} />,
     'Type.String({\n  format: "time"\n})'
   );
-  expectRender(runner.program, <TypeBoxSchema type={utcDateTimeProp.type} />, 'Type.Date()');
-  expectRender(runner.program, <TypeBoxSchema type={offsetDateTimeProp.type} />, 'Type.Date()');
+  expectRender(
+    runner.program,
+    <TypeBoxSchema type={utcDateTimeProp.type} />,
+    'Type.String({\n  format: "date-time"\n})'
+  );
+  expectRender(
+    runner.program,
+    <TypeBoxSchema type={offsetDateTimeProp.type} />,
+    'Type.String({\n  format: "date-time"\n})'
+  );
 });
 
 it('works with dates and encodings', async () => {
@@ -166,7 +210,11 @@ it('works with dates and encodings', async () => {
       scalar rfc7231DateOffset extends offsetDateTime;
     `);
 
-  expectRender(runner.program, <TypeBoxSchema type={int32Date} />, 'Type.Integer()');
+  expectRender(
+    runner.program,
+    <TypeBoxSchema type={int32Date} />,
+    'Type.Integer({\n  minimum: -2147483648,\n  maximum: 2147483647\n})'
+  );
   expectRender(runner.program, <TypeBoxSchema type={int64Date} />, 'Type.BigInt()');
   expectRender(
     runner.program,
@@ -211,7 +259,11 @@ it('works with durations and encodings', async () => {
     <TypeBoxSchema type={isoDuration} />,
     'Type.String({\n  format: "duration"\n})'
   );
-  expectRender(runner.program, <TypeBoxSchema type={secondsDuration} />, 'Type.Integer()');
+  expectRender(
+    runner.program,
+    <TypeBoxSchema type={secondsDuration} />,
+    'Type.Integer({\n  minimum: -2147483648,\n  maximum: 2147483647\n})'
+  );
   expectRender(runner.program, <TypeBoxSchema type={int64SecondsDuration} />, 'Type.BigInt()');
 });
 
