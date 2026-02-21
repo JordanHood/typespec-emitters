@@ -21,5 +21,5 @@ catalogs:
     rimraf: 6.1.2
     tsup: 8.3.5
   test:
-    "@types/node": 24.10.10
+    "@types/node": 24.10.13
     "@vitest/ui": 4.0.18
