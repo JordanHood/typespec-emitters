@@ -31,7 +31,7 @@ export function typeboxBaseSchemaParts(type: Type, member?: ModelProperty): Chil
     case 'String':
     case 'Number':
     case 'Boolean':
-      return literalBaseType($, type, member);
+      return literalBaseType($, type);
     case 'Scalar':
       return scalarBaseType($, type, member);
     case 'Model':
@@ -53,7 +53,7 @@ export function typeboxBaseSchemaParts(type: Type, member?: ModelProperty): Chil
   }
 }
 
-function literalBaseType($: Typekit, type: LiteralType, member?: ModelProperty): Children {
+function literalBaseType($: Typekit, type: LiteralType): Children {
   switch (type.kind) {
     case 'String':
       return typeboxCall('Literal', `"${type.value}"`);

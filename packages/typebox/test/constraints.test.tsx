@@ -49,6 +49,21 @@ describe('string constraints', () => {
     );
   });
 
+  it('escapes backslashes in pattern', async () => {
+    const runner = await createTestRunner();
+    const { phoneProp } = (await runner.compile(`
+      model Test {
+        @test @pattern("^\\\\d{3}-\\\\d{4}$") phoneProp: string;
+      }
+    `)) as Record<string, ModelProperty>;
+
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={phoneProp} />,
+      'Type.String({\n  pattern: "^\\\\d{3}-\\\\d{4}$"\n})'
+    );
+  });
+
   it('applies minLength only', async () => {
     const runner = await createTestRunner();
     const { tagProp } = (await runner.compile(`
@@ -305,6 +320,21 @@ describe('description', () => {
       runner.program,
       <TypeBoxSchema type={nameProp} />,
       'Type.String({\n  description: "A person\'s name"\n})'
+    );
+  });
+
+  it('escapes double quotes in description', async () => {
+    const runner = await createTestRunner();
+    const { valProp } = (await runner.compile(`
+      model Test {
+        @test @doc("A \\"quoted\\" value") valProp: string;
+      }
+    `)) as Record<string, ModelProperty>;
+
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={valProp} />,
+      'Type.String({\n  description: "A \\"quoted\\" value"\n})'
     );
   });
 

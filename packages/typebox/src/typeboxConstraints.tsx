@@ -114,7 +114,9 @@ function collectStringConstraints(
     properties.push(<ObjectProperty name="maxLength">{`${maxLength}`}</ObjectProperty>);
   }
   if (pattern !== undefined) {
-    properties.push(<ObjectProperty name="pattern">{`"${pattern}"`}</ObjectProperty>);
+    properties.push(
+      <ObjectProperty name="pattern">{`"${pattern.replace(/\\/g, '\\\\').replace(/"/g, '\\"')}"`}</ObjectProperty>
+    );
   }
   if (format !== undefined) {
     properties.push(<ObjectProperty name="format">{`"${format}"`}</ObjectProperty>);
@@ -294,7 +296,8 @@ function collectDescription(
   }
 
   if (description) {
-    properties.push(<ObjectProperty name="description">{`"${description}"`}</ObjectProperty>);
+    const escaped = description.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+    properties.push(<ObjectProperty name="description">{`"${escaped}"`}</ObjectProperty>);
   }
 }
 
