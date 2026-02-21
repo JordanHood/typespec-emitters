@@ -1,5 +1,18 @@
 # @typespec-dev/emitter-typebox
 
+## 0.3.0
+
+### Minor Changes
+
+- [#7](https://github.com/JordanHood/typespec-emitters/pull/7) [`b5b0648`](https://github.com/JordanHood/typespec-emitters/commit/b5b06488a68bbb323e7a557083ce81b5d6cbdd9d) Thanks [@JordanHood](https://github.com/JordanHood)! - Add validation constraints, descriptions, defaults, and intrinsic numeric bounds to generated TypeBox schemas.
+  - String constraints: minLength, maxLength, pattern, format via decorators
+  - Numeric constraints: minimum, maximum, exclusiveMinimum, exclusiveMaximum
+  - Intrinsic bounds for int8/16/32, uint8/16/32, safeint, float32
+  - Array constraints: minItems, maxItems
+  - Description from @doc decorator
+  - Default values from property defaults
+  - Fix Type.Date() to Type.String({ format: "date" | "date-time" })
+
 ## 0.2.0
 
 ### Minor Changes
