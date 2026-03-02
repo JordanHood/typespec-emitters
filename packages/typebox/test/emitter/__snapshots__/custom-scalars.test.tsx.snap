@@ -1,0 +1,39 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`custom scalar emitter output > emits custom scalars extending numeric types 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const positiveInt = Type.Integer({
+  minimum: 1,
+  maximum: 2147483647
+})
+export type PositiveInt = Static<typeof positiveInt>;
+
+export const percentage = Type.Number()
+export type Percentage = Static<typeof percentage>;
+
+export const stats = Type.Object({
+  count: positiveInt,
+  ratio: percentage,
+})
+export type Stats = Static<typeof stats>;"
+`;
+
+exports[`custom scalar emitter output > emits custom scalars extending string used in model 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const userId = Type.String()
+export type UserId = Static<typeof userId>;
+
+export const email = Type.String({
+  maxLength: 255
+})
+export type Email = Static<typeof email>;
+
+export const user = Type.Object({
+  id: userId,
+  email: email,
+  name: Type.String(),
+})
+export type User = Static<typeof user>;"
+`;
