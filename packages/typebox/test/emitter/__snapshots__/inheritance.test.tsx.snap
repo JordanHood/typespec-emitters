@@ -1,0 +1,62 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`inheritance emitter output > emits empty extension 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const animal = Type.Object({
+  name: Type.String(),
+})
+export type Animal = Static<typeof animal>;
+
+export const emptyDog = Type.Intersect([animal, Type.Object({})])
+export type EmptyDog = Static<typeof emptyDog>;"
+`;
+
+exports[`inheritance emitter output > emits multi-level inheritance 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const base = Type.Object({
+  id: Type.String(),
+})
+export type Base = Static<typeof base>;
+
+export const middle = Type.Intersect([
+  base,
+  Type.Object({
+    name: Type.String(),
+  })
+])
+export type Middle = Static<typeof middle>;
+
+export const leaf = Type.Intersect([
+  middle,
+  Type.Object({
+    extra: Type.Integer({
+      minimum: -2147483648,
+      maximum: 2147483647
+    }),
+  })
+])
+export type Leaf = Static<typeof leaf>;"
+`;
+
+exports[`inheritance emitter output > emits single inheritance with Intersect 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const animal = Type.Object({
+  name: Type.String(),
+  age: Type.Integer({
+    minimum: -2147483648,
+    maximum: 2147483647
+  }),
+})
+export type Animal = Static<typeof animal>;
+
+export const dog = Type.Intersect([
+  animal,
+  Type.Object({
+    breed: Type.String(),
+  })
+])
+export type Dog = Static<typeof dog>;"
+`;

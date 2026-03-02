@@ -1,4 +1,4 @@
-import { For, refkey } from '@alloy-js/core';
+import { createContext, For, refkey } from '@alloy-js/core';
 import { Children } from '@alloy-js/core/jsx-runtime';
 import {
   ArrayExpression,
@@ -8,6 +8,8 @@ import {
 } from '@alloy-js/typescript';
 import {
   Enum,
+  getDiscriminator,
+  getDiscriminatedUnionFromInheritance,
   LiteralType,
   Model,
   ModelProperty,
@@ -21,6 +23,43 @@ import { useTsp } from '@typespec/emitter-framework';
 import { TypeBoxSchema } from './components/TypeBoxSchema.jsx';
 import { buildTypeboxOpts } from './typeboxConstraints.jsx';
 import { isRecord, refkeySym, shouldReference, typeboxCall } from './utils.jsx';
+
+export const RecursiveModelContext = createContext<Model>();
+
+function isSelfReferencing($: Typekit, model: Model): boolean {
+  const visited = new Set<Type>();
+
+  function check(type: Type): boolean {
+    if (visited.has(type)) return false;
+    visited.add(type);
+
+    if (type === model) return true;
+
+    if (type.kind === 'Model') {
+      if ($.array.is(type)) {
+        return check(type.indexer!.value);
+      }
+      if (isRecord($.program, type)) {
+        return check(type.indexer!.value);
+      }
+      return false;
+    }
+
+    if (type.kind === 'Union') {
+      for (const variant of type.variants.values()) {
+        if (check(variant.type)) return true;
+      }
+    }
+
+    return false;
+  }
+
+  for (const prop of model.properties.values()) {
+    if (check(prop.type)) return true;
+  }
+
+  return false;
+}
 
 export function typeboxBaseSchemaParts(type: Type, member?: ModelProperty): Children {
   const { $ } = useTsp();
@@ -142,6 +181,33 @@ function scalarBaseType($: Typekit, type: Scalar, member?: ModelProperty): Child
   }
 }
 
+function hasDiscriminatedAncestor($: Typekit, type: Model): boolean {
+  let current = type.baseModel;
+  while (current) {
+    if (getDiscriminator($.program, current)) return true;
+    current = current.baseModel;
+  }
+  return false;
+}
+
+function buildObjectFromProperties(properties: ModelProperty[]): Children {
+  const members = (
+    <ObjectExpression>
+      <For each={properties} comma hardline enderPunctuation>
+        {function (prop) {
+          const schema = <TypeBoxSchema type={prop} nested />;
+          return (
+            <ObjectProperty name={prop.name}>
+              {prop.optional ? typeboxCall('Optional', schema) : schema}
+            </ObjectProperty>
+          );
+        }}
+      </For>
+    </ObjectExpression>
+  );
+  return typeboxCall('Object', members);
+}
+
 function modelBaseType($: Typekit, type: Model, member?: ModelProperty): Children {
   if ($.array.is(type)) {
     const opts = buildTypeboxOpts($, type, { member });
@@ -152,6 +218,55 @@ function modelBaseType($: Typekit, type: Model, member?: ModelProperty): Childre
     );
   }
 
+  const discriminator = getDiscriminator($.program, type);
+  if (discriminator) {
+    const [discUnion] = getDiscriminatedUnionFromInheritance(type, discriminator);
+    if (discUnion && discUnion.variants.size > 0) {
+      const variants = [...discUnion.variants.values()];
+      return typeboxCall(
+        'Union',
+        <ArrayExpression>
+          <For each={variants} comma line>
+            {function (variant) {
+              return <TypeBoxSchema type={variant} nested />;
+            }}
+          </For>
+        </ArrayExpression>
+      );
+    }
+  }
+
+  if (hasDiscriminatedAncestor($, type)) {
+    const allProperties = $.model.getProperties(type, { includeExtended: true });
+    if (allProperties.size > 0) {
+      return buildObjectFromProperties([...allProperties.values()]);
+    }
+    return typeboxCall('Object', <ObjectExpression />);
+  }
+
+  const recursive = isSelfReferencing($, type);
+  const schema = recursive ? (
+    <RecursiveModelContext.Provider value={type}>
+      {modelSchemaBody($, type)}
+    </RecursiveModelContext.Provider>
+  ) : (
+    modelSchemaBody($, type)
+  );
+
+  if (recursive) {
+    return typeboxCall(
+      'Recursive',
+      <>
+        {'This => '}
+        {schema}
+      </>
+    );
+  }
+
+  return schema;
+}
+
+function modelSchemaBody($: Typekit, type: Model): Children {
   let recordPart;
   if (
     isRecord($.program, type) ||
@@ -168,52 +283,46 @@ function modelBaseType($: Typekit, type: Model, member?: ModelProperty): Childre
 
   let objectPart;
   if (type.properties.size > 0) {
-    const members = (
-      <ObjectExpression>
-        <For each={type.properties.values()} comma hardline enderPunctuation>
-          {function (prop) {
-            const schema = <TypeBoxSchema type={prop} nested />;
-            return (
-              <ObjectProperty name={prop.name}>
-                {prop.optional ? typeboxCall('Optional', schema) : schema}
-              </ObjectProperty>
-            );
+    objectPart = buildObjectFromProperties([...type.properties.values()]);
+  }
+
+  let ownSchema;
+  if (objectPart && recordPart) {
+    const parts = [objectPart, recordPart];
+    ownSchema = typeboxCall(
+      'Intersect',
+      <ArrayExpression>
+        <For each={parts} comma line>
+          {function (part) {
+            return part;
           }}
         </For>
-      </ObjectExpression>
-    );
-    objectPart = typeboxCall('Object', members);
-  }
-
-  if (!objectPart && !recordPart) {
-    return typeboxCall('Object', <ObjectExpression />);
-  }
-
-  if (objectPart && recordPart) {
-    return typeboxCall(
-      'Intersect',
-      <ArrayExpression>
-        {objectPart}
-        {recordPart}
       </ArrayExpression>
     );
+  } else {
+    ownSchema = objectPart ?? recordPart ?? typeboxCall('Object', <ObjectExpression />);
   }
-
-  const parts = objectPart ?? recordPart!;
 
   if (type.baseModel && shouldReference($.program, type.baseModel)) {
+    const baseRef = (
+      <MemberExpression>
+        <MemberExpression.Part refkey={refkey(type.baseModel, refkeySym)} />
+      </MemberExpression>
+    );
+    const intersectParts = [baseRef, ownSchema];
     return typeboxCall(
       'Intersect',
       <ArrayExpression>
-        <MemberExpression>
-          <MemberExpression.Part refkey={refkey(type.baseModel, refkeySym)} />
-        </MemberExpression>
-        {parts}
+        <For each={intersectParts} comma line>
+          {function (part) {
+            return part;
+          }}
+        </For>
       </ArrayExpression>
     );
   }
 
-  return parts;
+  return ownSchema;
 }
 
 function unionBaseType(type: Union): Children {

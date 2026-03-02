@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`recursive type emitter output > emits recursive model with non-recursive sibling 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const category = Type.Recursive(This => Type.Object({
+  name: Type.String(),
+  subcategories: Type.Array(This),
+}))
+export type Category = Static<typeof category>;
+
+export const product = Type.Object({
+  title: Type.String(),
+  category: category,
+})
+export type Product = Static<typeof product>;"
+`;
+
+exports[`recursive type emitter output > emits self-referencing tree node 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const treeNode = Type.Recursive(This => Type.Object({
+  value: Type.String(),
+  children: Type.Array(This),
+}))
+export type TreeNode = Static<typeof treeNode>;"
+`;
