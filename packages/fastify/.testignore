@@ -1,28 +1,34 @@
-# Focus on parameters and type tests
-# Skip everything else
-
+# Not in scope for this emitter
 authentication/
-documentation
 encode/
-payload/
-response/
 routes
-serialization/
-server/
-special-headers/
-special-words
 streaming/
-versioning/
 
-# Skip other parameter tests
-parameters/collection-format
+# Payload tests - only pageable is ready
+payload/content-negotiation
+payload/json-merge-patch
+payload/media-type
+payload/multipart
+payload/xml
+
+# Server - Unresolved Symbol bugs in generated code
+server/
+
+# Emitter bugs - reserved word naming / Unresolved Symbol issues
+special-words
+
+# Emitter bug - no error response body support in generated routes
+response/status-code-range
+
+# Versioning scenarios with Unresolved Symbol bugs in models (z.number() ref missing)
+versioning/added
+versioning/removed
+versioning/renamedFrom
 
 # Type tests with known typespec-zod limitations
-# - Description string escaping issues
 type/property/additional-properties
 type/property/value-types
 
 # Blocked: Zod does not support recursive/circular model references
-# Will be unblocked by TypeBox integration
 type/array
 type/dictionary

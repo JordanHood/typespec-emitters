@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import fastify from 'fastify';
-import { registerRoutes } from '../generated/parameters/collection-format/router.js';
+import { registerRoutes } from '../generated/documentation/router.js';
 import { startServer } from '../helpers.js';
 import { runScenario } from '../spector.js';
-import type { Header } from '../generated/parameters/collection-format/operations/header.js';
-import type { Query } from '../generated/parameters/collection-format/operations/query.js';
+import type { Lists } from '../generated/documentation/operations/lists.js';
+import type { TextFormatting } from '../generated/documentation/operations/textformatting.js';
 
-describe('Parameters.Collection-format', () => {
+describe('Documentation', () => {
   let serverAbortController: AbortController;
 
   beforeEach(() => {
@@ -18,37 +18,41 @@ describe('Parameters.Collection-format', () => {
   });
 
   it('passes all scenarios', async () => {
-    const headerOps: Header = {
-      csv: async function (_colors) {
+    const listsOps: Lists = {
+      bulletPointsOp: async function () {
+        return { statusCode: 204 };
+      },
+      bulletPointsModel: async function (body) {
+        expect(body.input.prop).toBe('Simple');
+        return { statusCode: 204 };
+      },
+      numbered: async function () {
         return { statusCode: 204 };
       },
     };
 
-    const queryOps: Query = {
-      multi: async function (_options) {
+    const textformattingOps: TextFormatting = {
+      boldText: async function () {
         return { statusCode: 204 };
       },
-      ssv: async function (_options) {
+      italicText: async function () {
         return { statusCode: 204 };
       },
-      pipes: async function (_options) {
-        return { statusCode: 204 };
-      },
-      csv: async function (_options) {
+      combinedFormatting: async function () {
         return { statusCode: 204 };
       },
     };
 
     const operations = {
-      header: headerOps,
-      query: queryOps,
+      lists: listsOps,
+      textformatting: textformattingOps,
     };
 
     const app = fastify({ logger: false });
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('parameters/collection-format', baseUrl, 'parameters/collection*/**/*');
+    const { status } = await runScenario('documentation', baseUrl);
     expect(status).toBe('pass');
   });
 });
