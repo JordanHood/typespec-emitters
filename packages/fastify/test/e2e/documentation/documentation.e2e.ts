@@ -1,3 +1,13 @@
+/*
+ * BLOCKED: @body wrapping bug + status code mismatch
+ *
+ * `@body input: Model` generates Zod schema `z.object({ input: model })`, wrapping the body in
+ * an extra object layer. Spector sends the flat model `{ prop: "Simple" }` which fails Zod
+ * validation. Additionally, the emitter returns 204 (NoContentResponse) but mockapi expects 200
+ * for the POST operation.
+ *
+ * Fix requires: Unwrap anonymous body models in RouteRegistration.tsx generateZodRouteSchema.
+ */
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import fastify from 'fastify';
 import { registerRoutes } from '../generated/documentation/router.js';

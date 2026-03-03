@@ -27,11 +27,11 @@ describe('SpecialHeaders.ConditionalRequest', () => {
         return { statusCode: 204 };
       },
       headIfModifiedSince: async function (ifModifiedSince) {
-        expect(ifModifiedSince).toBeTruthy();
+        expect(ifModifiedSince).toBe('Fri, 26 Aug 2022 14:38:00 GMT');
         return { statusCode: 204 };
       },
       postIfUnmodifiedSince: async function (ifUnmodifiedSince) {
-        expect(ifUnmodifiedSince).toBeTruthy();
+        expect(ifUnmodifiedSince).toBe('Fri, 26 Aug 2022 14:38:00 GMT');
         return { statusCode: 204 };
       },
     };

@@ -1,3 +1,12 @@
+/*
+ * BLOCKED: No pagination protocol support
+ *
+ * Multiple issues: no /nextPage routes for link-based pagination, no response header generation
+ * for continuation-token-in-header scenarios, no baseUrl injection for `next` link URLs.
+ *
+ * Fix requires: Pagination protocol support in emitter -- next-page route generation, response
+ * headers, URL construction.
+ */
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import fastify from 'fastify';
 import { registerRoutes } from '../generated/payload/pageable/router.js';

@@ -1,3 +1,12 @@
+/*
+ * BLOCKED: No @encodedName wire format support
+ *
+ * @encodedName("application/json", "wireName") decorator not applied. Zod schema uses TS
+ * property name `defaultName` but spector sends/expects wire name `wireName`.
+ *
+ * Fix requires: Read @encodedName decorators, generate Zod .transform() wrappers for
+ * wire<->TS name mapping, or upstream fix in typespec-zod ZodSchema component.
+ */
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import fastify from 'fastify';
 import { registerRoutes } from '../../generated/serialization/encoded-name/json/router.js';

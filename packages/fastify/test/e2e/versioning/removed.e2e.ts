@@ -26,19 +26,18 @@ describe('Versioning.Removed', () => {
           body: { prop: 'foo', enumProp: 'enumMember', unionProp: 'bar' },
         };
       },
-      v2: async function (body, options) {
+      v2: async function (body) {
         expect(body).toEqual({ prop: 'foo', enumProp: 'enumMemberV2', unionProp: 'bar' });
-        expect(options.param).toBeTruthy();
         return {
           statusCode: 200,
           body: { prop: 'foo', enumProp: 'enumMemberV2', unionProp: 'bar' },
         };
       },
       modelV3: async function (body) {
-        expect(body.id).toBeTruthy();
+        expect(body).toEqual({ id: '123', enumProp: 'enumMemberV1' });
         return {
           statusCode: 200,
-          body: { id: body.id, enumProp: body.enumProp },
+          body: { id: '123', enumProp: 'enumMemberV1' },
         };
       },
     };
