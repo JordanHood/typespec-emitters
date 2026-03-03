@@ -58,7 +58,7 @@
     "watch": "alloy build --watch",
     "dev": "alloy build --watch",
     "type": "tsc --noEmit -p tsconfig.test.json",
-    "test": "pnpm type && pnpm test:unit && pnpm test:e2e",
+    "test": "pnpm test:unit && pnpm test:e2e",
     "test:unit": "vitest run",
     "test:watch": "vitest",
     "test:ui": "vitest --ui",

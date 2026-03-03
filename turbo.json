@@ -13,8 +13,11 @@
       "dependsOn": ["^build"],
       "cache": false
     },
+    "type": {
+      "dependsOn": ["build"]
+    },
     "test": {
-      "dependsOn": ["build"],
+      "dependsOn": ["build", "type"],
       "cache": false
     },
     "dev": {
