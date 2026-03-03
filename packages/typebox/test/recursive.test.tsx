@@ -3,10 +3,10 @@ import { createTSNamePolicy, SourceFile } from '@alloy-js/typescript';
 import { Model } from '@typespec/compiler';
 import { Output } from '@typespec/emitter-framework';
 import { describe, expect, it } from 'vitest';
+import { TypeBoxSchema } from '../src/components/TypeBoxSchema.jsx';
 import { TypeBoxSchemaDeclaration } from '../src/components/TypeBoxSchemaDeclaration.jsx';
 import { typebox } from '../src/index.js';
 import { createTestRunner, expectRender } from './utils.jsx';
-import { TypeBoxSchema } from '../src/components/TypeBoxSchema.jsx';
 
 describe('recursive types', () => {
   it('wraps self-referencing model in Type.Recursive', async () => {
