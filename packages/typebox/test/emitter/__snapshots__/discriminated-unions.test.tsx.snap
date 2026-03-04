@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`discriminated union emitter output > emits discriminated union from inheritance 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const shape = Type.Union([circle, square])
+export type Shape = Static<typeof shape>;
+
+export const square = Type.Object({
+  kind: Type.Literal("square"),
+  side: Type.Number(),
+})
+export type Square = Static<typeof square>;
+
+export const circle = Type.Object({
+  kind: Type.Literal("circle"),
+  radius: Type.Number(),
+})
+export type Circle = Static<typeof circle>;"
+`;
+
+exports[`discriminated union emitter output > emits discriminated union with additional inherited properties 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const pet = Type.Union([cat, dog])
+export type Pet = Static<typeof pet>;
+
+export const dog = Type.Object({
+  type: Type.Literal("dog"),
+  trained: Type.Boolean(),
+  name: Type.String(),
+})
+export type Dog = Static<typeof dog>;
+
+export const cat = Type.Object({
+  type: Type.Literal("cat"),
+  indoor: Type.Boolean(),
+  name: Type.String(),
+})
+export type Cat = Static<typeof cat>;"
+`;

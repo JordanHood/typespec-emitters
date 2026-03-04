@@ -77,6 +77,45 @@ describe('models', () => {
     expect(contents).toContain('child: child');
   });
 
+  it('works with inline anonymous model property', async () => {
+    const runner = await createTestRunner();
+    const { Parent } = (await runner.compile(`
+      @test model Parent {
+        details: {
+          firstName: string;
+          lastName: string;
+        };
+      }
+    `)) as Record<string, Model>;
+
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={Parent} />,
+      'Type.Object({\n  details: Type.Object({\n    firstName: Type.String(),\n    lastName: Type.String(),\n  }),\n})'
+    );
+  });
+
+  it('works with spread properties', async () => {
+    const runner = await createTestRunner();
+    const { Extended } = (await runner.compile(`
+      model Base {
+        name: string;
+        age: int32;
+      }
+
+      @test model Extended {
+        ...Base;
+        email: string;
+      }
+    `)) as Record<string, Model>;
+
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={Extended} />,
+      'Type.Object({\n  name: Type.String(),\n  age: Type.Integer({\n    minimum: -2147483648,\n    maximum: 2147483647\n  }),\n  email: Type.String(),\n})'
+    );
+  });
+
   it('works with literal property types', async () => {
     const runner = await createTestRunner();
     const { LitModel } = (await runner.compile(`

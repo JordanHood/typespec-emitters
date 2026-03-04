@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`tuple emitter output > emits model with tuple properties 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const coordinate = Type.Object({
+  point: Type.Tuple([Type.Number(), Type.Number()]),
+  label: Type.String(),
+})
+export type Coordinate = Static<typeof coordinate>;
+
+export const response = Type.Object({
+  data: Type.Tuple([
+    Type.String(),
+    Type.Integer({
+      minimum: -2147483648,
+      maximum: 2147483647
+    }),
+    Type.Boolean()
+  ]),
+})
+export type Response = Static<typeof response>;"
+`;

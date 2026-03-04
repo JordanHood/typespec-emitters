@@ -34,6 +34,22 @@ describe('dictionaries', () => {
     );
   });
 
+  it('works with model extending Record with additional properties', async () => {
+    const runner = await createTestRunner();
+    const { Config } = (await runner.compile(`
+      @test model Config extends Record<string> {
+        apiKey: string;
+        baseUrl: string;
+      }
+    `)) as Record<string, Model>;
+
+    expectRender(
+      runner.program,
+      <TypeBoxSchema type={Config} />,
+      'Type.Intersect([\n  Type.Object({\n    apiKey: Type.String(),\n    baseUrl: Type.String(),\n  }),\n  Type.Record(Type.String(), Type.String())\n])'
+    );
+  });
+
   it('works with record property in model', async () => {
     const runner = await createTestRunner();
     const { DictModel } = (await runner.compile(`
