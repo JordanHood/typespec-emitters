@@ -1,28 +1,49 @@
-# Focus on parameters and type tests
-# Skip everything else
-
+# Not in scope for this emitter
 authentication/
-documentation
 encode/
-payload/
-response/
 routes
-serialization/
-server/
-special-headers/
-special-words
 streaming/
-versioning/
 
-# Skip other parameter tests
-parameters/collection-format
+# Payload tests - only pageable is ready
+payload/content-negotiation
+payload/json-merge-patch
+payload/media-type
+payload/multipart
+payload/xml
+
+# Server - Unresolved Symbol bugs in generated code
+server/
+
+# Emitter bugs - reserved word naming / Unresolved Symbol issues
+special-words
+
+# Emitter bug - no error response body support in generated routes
+response/status-code-range
+
+# Versioning scenarios with Unresolved Symbol bugs in models (z.number() ref missing)
+versioning/added
+versioning/removed
+versioning/renamedFrom
 
 # Type tests with known typespec-zod limitations
-# - Description string escaping issues
 type/property/additional-properties
 type/property/value-types
 
 # Blocked: Zod does not support recursive/circular model references
-# Will be unblocked by TypeBox integration
 type/array
 type/dictionary
+
+# Emitter bug: @body wrapping generates z.object({ input: model }) instead of flat model
+documentation
+
+# Emitter bug: no collection format query param parsing (CSV/SSV/pipes arrive as raw strings)
+parameters/collection-format
+
+# Emitter bug: no pagination protocol support (next-page routes, response headers, URL construction)
+payload/pageable
+
+# Emitter bug: no response header generation (reply.header() calls for @header properties)
+special-headers/repeatability
+
+# Emitter bug: no @encodedName wire format support (Zod uses TS names, not wire names)
+serialization/encoded-name/json
