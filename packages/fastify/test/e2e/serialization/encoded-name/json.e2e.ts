@@ -48,7 +48,11 @@ describe('Serialization.EncodedName.Json', () => {
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('serialization/encoded-name/json', baseUrl, 'serialization/encoded*/**/*');
+    const { status } = await runScenario(
+      'serialization/encoded-name/json',
+      baseUrl,
+      'serialization/encoded*/**/*'
+    );
     expect(status).toBe('pass');
   });
 });

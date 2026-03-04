@@ -45,9 +45,12 @@ describe('Versioning.RenamedFrom', () => {
     };
 
     const app = fastify({ logger: false });
-    await app.register(async function (instance) {
-      await registerRoutes(instance, operations);
-    }, { prefix: '/versioning/renamed-from/api-version:v2' });
+    await app.register(
+      async function (instance) {
+        await registerRoutes(instance, operations);
+      },
+      { prefix: '/versioning/renamed-from/api-version:v2' }
+    );
 
     const baseUrl = await startServer(app, serverAbortController.signal);
     const { status } = await runScenario('versioning/renamedFrom', baseUrl);

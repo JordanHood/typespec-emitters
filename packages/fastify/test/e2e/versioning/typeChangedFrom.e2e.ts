@@ -34,9 +34,12 @@ describe('Versioning.TypeChangedFrom', () => {
     };
 
     const app = fastify({ logger: false });
-    await app.register(async function (instance) {
-      await registerRoutes(instance, operations);
-    }, { prefix: '/versioning/type-changed-from/api-version:v2' });
+    await app.register(
+      async function (instance) {
+        await registerRoutes(instance, operations);
+      },
+      { prefix: '/versioning/type-changed-from/api-version:v2' }
+    );
 
     const baseUrl = await startServer(app, serverAbortController.signal);
     const { status } = await runScenario('versioning/typeChangedFrom', baseUrl);

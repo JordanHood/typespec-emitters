@@ -44,7 +44,11 @@ describe('SpecialHeaders.ConditionalRequest', () => {
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('special-headers/conditional-request', baseUrl, 'special*/conditional*/**/*');
+    const { status } = await runScenario(
+      'special-headers/conditional-request',
+      baseUrl,
+      'special*/conditional*/**/*'
+    );
     expect(status).toBe('pass');
   });
 });

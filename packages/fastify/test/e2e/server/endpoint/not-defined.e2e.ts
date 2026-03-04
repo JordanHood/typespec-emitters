@@ -31,7 +31,11 @@ describe('Server.Endpoint.NotDefined', () => {
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('server/endpoint/not-defined', baseUrl, 'server/endpoint/not*/**/*');
+    const { status } = await runScenario(
+      'server/endpoint/not-defined',
+      baseUrl,
+      'server/endpoint/not*/**/*'
+    );
     expect(status).toBe('pass');
   });
 });

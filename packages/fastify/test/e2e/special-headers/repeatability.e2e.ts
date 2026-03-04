@@ -43,7 +43,11 @@ describe('SpecialHeaders.Repeatability', () => {
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('special-headers/repeatability', baseUrl, 'special*/repeatability/**/*');
+    const { status } = await runScenario(
+      'special-headers/repeatability',
+      baseUrl,
+      'special*/repeatability/**/*'
+    );
     expect(status).toBe('pass');
   });
 });

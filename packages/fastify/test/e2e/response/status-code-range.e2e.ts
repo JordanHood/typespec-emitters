@@ -34,7 +34,11 @@ describe('Response.StatusCodeRange', () => {
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('response/status-code-range', baseUrl, 'response/status*/**/*');
+    const { status } = await runScenario(
+      'response/status-code-range',
+      baseUrl,
+      'response/status*/**/*'
+    );
     expect(status).toBe('pass');
   });
 });

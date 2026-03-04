@@ -37,7 +37,11 @@ describe('Server.Versions.NotVersioned', () => {
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('server/versions/not-versioned', baseUrl, 'server/versions/not*/**/*');
+    const { status } = await runScenario(
+      'server/versions/not-versioned',
+      baseUrl,
+      'server/versions/not*/**/*'
+    );
     expect(status).toBe('pass');
   });
 });

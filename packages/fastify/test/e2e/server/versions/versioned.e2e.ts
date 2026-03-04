@@ -40,7 +40,11 @@ describe('Server.Versions.Versioned', () => {
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('server/versions/versioned', baseUrl, 'server/versions/versioned/**/*');
+    const { status } = await runScenario(
+      'server/versions/versioned',
+      baseUrl,
+      'server/versions/versioned/**/*'
+    );
     expect(status).toBe('pass');
   });
 });

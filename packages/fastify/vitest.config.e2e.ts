@@ -5,9 +5,7 @@ export default defineConfig({
     environment: 'node',
     testTimeout: 10000,
     isolate: false,
-    include: [
-      'test/e2e/**/*.e2e.ts',
-    ],
+    include: ['test/e2e/**/*.e2e.ts'],
     exclude: [
       // Blocked: Zod does not support recursive/circular model references
       'test/e2e/type/array.e2e.ts',

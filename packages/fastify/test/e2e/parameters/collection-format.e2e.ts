@@ -57,7 +57,11 @@ describe('Parameters.Collection-format', () => {
     await registerRoutes(app, operations);
 
     const baseUrl = await startServer(app, serverAbortController.signal);
-    const { status } = await runScenario('parameters/collection-format', baseUrl, 'parameters/collection*/**/*');
+    const { status } = await runScenario(
+      'parameters/collection-format',
+      baseUrl,
+      'parameters/collection*/**/*'
+    );
     expect(status).toBe('pass');
   });
 });
