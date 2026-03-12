@@ -13,6 +13,7 @@ import {
   LiteralType,
   Model,
   ModelProperty,
+  resolveEncodedName,
   Scalar,
   Tuple,
   Type,
@@ -21,7 +22,8 @@ import {
 import { Typekit } from '@typespec/compiler/typekit';
 import { useTsp } from '@typespec/emitter-framework';
 import { TypeBoxSchema } from './components/TypeBoxSchema.jsx';
-import { buildTypeboxOpts } from './typeboxConstraints.jsx';
+import { buildModelTypeboxOpts, buildTypeboxOpts } from './typeboxConstraints.jsx';
+import { reportDiagnostic } from './lib.js';
 import { isRecord, refkeySym, shouldReference, typeboxCall } from './utils.jsx';
 
 export const RecursiveModelContext = createContext<Model>();
@@ -36,11 +38,11 @@ function isSelfReferencing($: Typekit, model: Model): boolean {
     if (type === model) return true;
 
     if (type.kind === 'Model') {
-      if ($.array.is(type)) {
-        return check(type.indexer!.value);
+      if ($.array.is(type) && type.indexer) {
+        return check(type.indexer.value);
       }
-      if (isRecord($.program, type)) {
-        return check(type.indexer!.value);
+      if (isRecord($.program, type) && type.indexer) {
+        return check(type.indexer.value);
       }
       return false;
     }
@@ -66,7 +68,7 @@ export function typeboxBaseSchemaParts(type: Type, member?: ModelProperty): Chil
 
   switch (type.kind) {
     case 'Intrinsic':
-      return intrinsicBaseType(type);
+      return intrinsicBaseType($, type);
     case 'String':
     case 'Number':
     case 'Boolean':
@@ -88,6 +90,7 @@ export function typeboxBaseSchemaParts(type: Type, member?: ModelProperty): Chil
         ? literalBaseType($, $.literal.create(type.value))
         : literalBaseType($, $.literal.create(type.name));
     default:
+      reportDiagnostic($.program, { code: 'unhandled-type', target: type });
       return typeboxCall('Any');
   }
 }
@@ -137,6 +140,7 @@ function scalarBaseType($: Typekit, type: Scalar, member?: ModelProperty): Child
     const opts = buildTypeboxOpts($, type, { member });
     return typeboxCall('String', ...(opts ? [opts] : []));
   } else if ($.scalar.extendsBytes(type)) {
+    reportDiagnostic($.program, { code: 'unsupported-bytes-scalar', target: type });
     return typeboxCall('Any');
   } else if ($.scalar.extendsPlainDate(type)) {
     const opts = buildTypeboxOpts($, type, { member, format: 'date' });
@@ -177,6 +181,7 @@ function scalarBaseType($: Typekit, type: Scalar, member?: ModelProperty): Child
       return scalarBaseType($, encoding.type, member);
     }
   } else {
+    reportDiagnostic($.program, { code: 'unrecognized-scalar', target: type });
     return typeboxCall('Any');
   }
 }
@@ -190,14 +195,19 @@ function hasDiscriminatedAncestor($: Typekit, type: Model): boolean {
   return false;
 }
 
-function buildObjectFromProperties(properties: ModelProperty[]): Children {
+function buildObjectFromProperties(
+  $: Typekit,
+  properties: ModelProperty[],
+  model?: Model
+): Children {
   const members = (
     <ObjectExpression>
       <For each={properties} comma hardline enderPunctuation>
         {function (prop) {
           const schema = <TypeBoxSchema type={prop} nested />;
+          const wireName = resolveEncodedName($.program, prop, 'application/json');
           return (
-            <ObjectProperty name={prop.name}>
+            <ObjectProperty name={wireName}>
               {prop.optional ? typeboxCall('Optional', schema) : schema}
             </ObjectProperty>
           );
@@ -205,7 +215,8 @@ function buildObjectFromProperties(properties: ModelProperty[]): Children {
       </For>
     </ObjectExpression>
   );
-  return typeboxCall('Object', members);
+  const opts = model ? buildModelTypeboxOpts($, model) : undefined;
+  return typeboxCall('Object', members, ...(opts ? [opts] : []));
 }
 
 function modelBaseType($: Typekit, type: Model, member?: ModelProperty): Children {
@@ -220,7 +231,8 @@ function modelBaseType($: Typekit, type: Model, member?: ModelProperty): Childre
 
   const discriminator = getDiscriminator($.program, type);
   if (discriminator) {
-    const [discUnion] = getDiscriminatedUnionFromInheritance(type, discriminator);
+    const [discUnion, discDiagnostics] = getDiscriminatedUnionFromInheritance(type, discriminator);
+    $.program.reportDiagnostics(discDiagnostics);
     if (discUnion && discUnion.variants.size > 0) {
       const variants = [...discUnion.variants.values()];
       return typeboxCall(
@@ -239,7 +251,7 @@ function modelBaseType($: Typekit, type: Model, member?: ModelProperty): Childre
   if (hasDiscriminatedAncestor($, type)) {
     const allProperties = $.model.getProperties(type, { includeExtended: true });
     if (allProperties.size > 0) {
-      return buildObjectFromProperties([...allProperties.values()]);
+      return buildObjectFromProperties($, [...allProperties.values()], type);
     }
     return typeboxCall('Object', <ObjectExpression />);
   }
@@ -283,7 +295,7 @@ function modelSchemaBody($: Typekit, type: Model): Children {
 
   let objectPart;
   if (type.properties.size > 0) {
-    objectPart = buildObjectFromProperties([...type.properties.values()]);
+    objectPart = buildObjectFromProperties($, [...type.properties.values()], type);
   }
 
   let ownSchema;
@@ -368,7 +380,7 @@ function enumBaseType(type: Enum): Children {
   );
 }
 
-function intrinsicBaseType(type: Type): Children {
+function intrinsicBaseType($: Typekit, type: Type): Children {
   if (type.kind === 'Intrinsic') {
     switch (type.name) {
       case 'null':
@@ -380,8 +392,10 @@ function intrinsicBaseType(type: Type): Children {
       case 'void':
         return typeboxCall('Void');
       default:
+        reportDiagnostic($.program, { code: 'unhandled-intrinsic', target: type });
         return typeboxCall('Any');
     }
   }
+  reportDiagnostic($.program, { code: 'unhandled-type', target: type });
   return typeboxCall('Any');
 }

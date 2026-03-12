@@ -1,7 +1,18 @@
 import { For } from '@alloy-js/core';
 import { Children } from '@alloy-js/core/jsx-runtime';
 import { ObjectExpression, ObjectProperty } from '@alloy-js/typescript';
-import { getFormat, getPattern, ModelProperty, Scalar, Type } from '@typespec/compiler';
+import {
+  getDeprecated,
+  getExamples,
+  getFormat,
+  getPattern,
+  isSecret,
+  Model,
+  ModelProperty,
+  Scalar,
+  serializeValueAsJson,
+  Type,
+} from '@typespec/compiler';
 import { Typekit } from '@typespec/compiler/typekit';
 import { ValueExpression } from '@typespec/emitter-framework/typescript';
 import { isBuiltIn, shouldReference } from './utils.jsx';
@@ -36,8 +47,83 @@ export function buildTypeboxOpts(
     collectArrayConstraints($, type, member, properties);
   }
 
-  collectDescription($, type, member, properties);
+  const deprecationMessage = getDeprecationMessage($, type, member);
+
+  collectDeprecated(deprecationMessage, properties);
+  collectSecret($, type, member, properties);
+  collectDescription($, type, member, deprecationMessage, properties);
   collectDefault(member, properties);
+
+  if (properties.length === 0) {
+    return undefined;
+  }
+
+  return (
+    <ObjectExpression>
+      <For each={properties} comma hardline>
+        {function (prop) {
+          return prop;
+        }}
+      </For>
+    </ObjectExpression>
+  );
+}
+
+export function buildModelTypeboxOpts($: Typekit, type: Model): Children | undefined {
+  const properties: Children[] = [];
+
+  const deprecationMessage = getDeprecated($.program, type);
+
+  if (deprecationMessage !== undefined) {
+    properties.push(<ObjectProperty name="deprecated">true</ObjectProperty>);
+  }
+
+  if (isSecret($.program, type)) {
+    properties.push(<ObjectProperty name="writeOnly">true</ObjectProperty>);
+  }
+
+  const docDescription = $.type.getDoc(type);
+  let description: string | undefined;
+
+  if (deprecationMessage !== undefined && docDescription) {
+    description = `Deprecated: ${deprecationMessage}. ${docDescription}`;
+  } else if (deprecationMessage !== undefined) {
+    description = `Deprecated: ${deprecationMessage}`;
+  } else {
+    description = docDescription;
+  }
+
+  if (description) {
+    const escaped = description.replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+    properties.push(<ObjectProperty name="description">{`"${escaped}"`}</ObjectProperty>);
+  }
+
+  const examples = getExamples($.program, type);
+  if (examples.length > 0) {
+    const serialized = examples
+      .map(function (ex) {
+        try {
+          return serializeValueAsJson($.program, ex.value, type);
+        } catch {
+          return undefined;
+        }
+      })
+      .filter(function (v) {
+        return v !== undefined;
+      });
+
+    if (serialized.length > 0) {
+      properties.push(
+        <ObjectProperty name="examples">
+          {`[${serialized
+            .map(function (v) {
+              return JSON.stringify(v);
+            })
+            .join(', ')}]`}
+        </ObjectProperty>
+      );
+    }
+  }
 
   if (properties.length === 0) {
     return undefined;
@@ -279,20 +365,67 @@ function collectArrayConstraints(
   }
 }
 
-function collectDescription(
+function getDeprecationMessage(
+  $: Typekit,
+  type: Type,
+  member: ModelProperty | undefined
+): string | undefined {
+  if (member) {
+    const msg = getDeprecated($.program, member);
+    if (msg !== undefined) return msg;
+  }
+  return getDeprecated($.program, type);
+}
+
+function collectDeprecated(deprecationMessage: string | undefined, properties: Children[]): void {
+  if (deprecationMessage !== undefined) {
+    properties.push(<ObjectProperty name="deprecated">true</ObjectProperty>);
+  }
+}
+
+function collectSecret(
   $: Typekit,
   type: Type,
   member: ModelProperty | undefined,
   properties: Children[]
 ): void {
-  let description: string | undefined;
+  let secret = false;
+  if (member) {
+    secret = isSecret($.program, member);
+  }
+  if (!secret) {
+    secret = isSecret($.program, type);
+  }
+  if (secret) {
+    properties.push(<ObjectProperty name="writeOnly">true</ObjectProperty>);
+  }
+}
+
+function collectDescription(
+  $: Typekit,
+  type: Type,
+  member: ModelProperty | undefined,
+  deprecationMessage: string | undefined,
+  properties: Children[]
+): void {
+  let docDescription: string | undefined;
 
   if (member) {
-    description = $.type.getDoc(member);
+    docDescription = $.type.getDoc(member);
   }
 
-  if (!description && !isBuiltIn($.program, type)) {
-    description = $.type.getDoc(type);
+  if (!docDescription && !isBuiltIn($.program, type)) {
+    docDescription = $.type.getDoc(type);
+  }
+
+  let description: string | undefined;
+
+  if (deprecationMessage !== undefined && docDescription) {
+    description = `Deprecated: ${deprecationMessage}. ${docDescription}`;
+  } else if (deprecationMessage !== undefined) {
+    description = `Deprecated: ${deprecationMessage}`;
+  } else {
+    description = docDescription;
   }
 
   if (description) {

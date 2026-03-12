@@ -1,0 +1,16 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`encodedName emitter output > emits model with JSON wire names 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const certificate = Type.Object({
+  issued_at: Type.String({
+    format: "date-time"
+  }),
+  expire_at: Type.String({
+    format: "date-time"
+  }),
+  issuer: Type.String(),
+})
+export type Certificate = Static<typeof certificate>;"
+`;
