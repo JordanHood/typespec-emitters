@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`example emitter output > emits model with multiple examples 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const user = Type.Object(
+  {
+    name: Type.String(),
+    age: Type.Integer({
+      minimum: -2147483648,
+      maximum: 2147483647
+    }),
+  },
+  {
+    examples: [{"name":"Bob","age":25}, {"name":"Alice","age":30}]
+  }
+)
+export type User = Static<typeof user>;"
+`;
+
+exports[`example emitter output > emits model with single example 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const user = Type.Object(
+  {
+    name: Type.String(),
+    age: Type.Integer({
+      minimum: -2147483648,
+      maximum: 2147483647
+    }),
+  },
+  {
+    examples: [{"name":"Alice","age":30}]
+  }
+)
+export type User = Static<typeof user>;"
+`;
+
+exports[`example emitter output > emits model without example unchanged 1`] = `
+"import { type Static, Type } from "typebox";
+
+export const user = Type.Object({
+  name: Type.String(),
+  age: Type.Integer({
+    minimum: -2147483648,
+    maximum: 2147483647
+  }),
+})
+export type User = Static<typeof user>;"
+`;
