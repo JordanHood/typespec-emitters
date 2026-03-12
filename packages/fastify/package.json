@@ -81,7 +81,7 @@
     "@typespec/emitter-framework": "catalog:",
     "@typespec/http-specs": "0.1.0-alpha.34",
     "@typespec/spector": "0.1.0-alpha.24",
-    "@vitest/coverage-v8": "4.0.18",
+    "@vitest/coverage-v8": "4.1.0",
     "@vitest/ui": "catalog:test",
     "fastify": "5.8.2",
     "fastify-type-provider-zod": "4.0.2",
