@@ -1,5 +1,11 @@
 # @typespec-dev/emitter-typebox
 
+## 0.5.0
+
+### Minor Changes
+
+- [#33](https://github.com/JordanHood/typespec-emitters/pull/33) [`b1311ca`](https://github.com/JordanHood/typespec-emitters/commit/b1311ca3da4adba0de800913102e2231a0e8bb72) Thanks [@JordanHood](https://github.com/JordanHood)! - Add support for @deprecated, @secret, @encodedName, and @example decorators
+
 ## 0.4.0
 
 ### Minor Changes
