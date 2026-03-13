@@ -32,7 +32,7 @@
     "neostandard": "0.13.0",
     "prettier": "catalog:",
     "rimraf": "catalog:build",
-    "turbo": "2.8.16",
+    "turbo": "2.8.17",
     "typescript": "catalog:",
     "vitest": "catalog:"
   },
