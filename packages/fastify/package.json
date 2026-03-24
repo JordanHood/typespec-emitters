@@ -79,7 +79,7 @@
     "@types/node": "catalog:test",
     "@typespec/compiler": "catalog:",
     "@typespec/emitter-framework": "catalog:",
-    "@typespec/http-specs": "0.1.0-alpha.34",
+    "@typespec/http-specs": "0.1.0-alpha.35",
     "@typespec/spector": "0.1.0-alpha.24",
     "@vitest/coverage-v8": "4.1.1",
     "@vitest/ui": "catalog:test",

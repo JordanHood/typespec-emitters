@@ -111,8 +111,8 @@ importers:
         specifier: 'catalog:'
         version: 0.17.0(@alloy-js/core@0.22.0)(@alloy-js/csharp@0.22.0)(@alloy-js/python@0.3.0)(@alloy-js/typescript@0.22.0)(@typespec/compiler@1.10.0(@types/node@24.12.0))
       '@typespec/http-specs':
-        specifier: 0.1.0-alpha.34
-        version: 0.1.0-alpha.34(@types/node@24.12.0)(@typespec/compiler@1.10.0(@types/node@24.12.0))(@typespec/http@1.10.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))(@typespec/rest@0.80.0(@typespec/compiler@1.10.0(@types/node@24.12.0))(@typespec/http@1.10.0(@typespec/compiler@1.10.0(@types/node@24.12.0))))(@typespec/versioning@0.80.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))(@typespec/xml@0.78.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))
+        specifier: 0.1.0-alpha.35
+        version: 0.1.0-alpha.35(@types/node@24.12.0)(@typespec/compiler@1.10.0(@types/node@24.12.0))(@typespec/http@1.10.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))(@typespec/rest@0.80.0(@typespec/compiler@1.10.0(@types/node@24.12.0))(@typespec/http@1.10.0(@typespec/compiler@1.10.0(@types/node@24.12.0))))(@typespec/versioning@0.80.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))(@typespec/xml@0.78.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))
       '@typespec/spector':
         specifier: 0.1.0-alpha.24
         version: 0.1.0-alpha.24(@types/node@24.12.0)
@@ -1257,8 +1257,8 @@ packages:
       '@alloy-js/typescript': ^0.22.0
       '@typespec/compiler': ^1.10.0
 
-  '@typespec/http-specs@0.1.0-alpha.34':
-    resolution: {integrity: sha512-xyOOFVUjBgZLYeDaoaZ6Mj6DoLjvDhhUvSRZIpWroAUHL+P30XR2wZ6dKLtOgF9uPn7S2MvpSvAAs4Z+mYh9YQ==}
+  '@typespec/http-specs@0.1.0-alpha.35':
+    resolution: {integrity: sha512-xLQUmldKvO0TTOf/wpYLbj2dIuXiQfw3gGKN0ZblD3Q3VGHOXEYEALdQ7lQWn3l2lV33cKgEfC3fX/q/p9N/ug==}
     engines: {node: '>=16.0.0'}
     peerDependencies:
       '@typespec/compiler': ^1.10.0
@@ -4802,7 +4802,7 @@ snapshots:
       '@alloy-js/typescript': 0.22.0
       '@typespec/compiler': 1.10.0(@types/node@24.12.0)
 
-  '@typespec/http-specs@0.1.0-alpha.34(@types/node@24.12.0)(@typespec/compiler@1.10.0(@types/node@24.12.0))(@typespec/http@1.10.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))(@typespec/rest@0.80.0(@typespec/compiler@1.10.0(@types/node@24.12.0))(@typespec/http@1.10.0(@typespec/compiler@1.10.0(@types/node@24.12.0))))(@typespec/versioning@0.80.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))(@typespec/xml@0.78.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))':
+  '@typespec/http-specs@0.1.0-alpha.35(@types/node@24.12.0)(@typespec/compiler@1.10.0(@types/node@24.12.0))(@typespec/http@1.10.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))(@typespec/rest@0.80.0(@typespec/compiler@1.10.0(@types/node@24.12.0))(@typespec/http@1.10.0(@typespec/compiler@1.10.0(@types/node@24.12.0))))(@typespec/versioning@0.80.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))(@typespec/xml@0.78.0(@typespec/compiler@1.10.0(@types/node@24.12.0)))':
     dependencies:
       '@typespec/compiler': 1.10.0(@types/node@24.12.0)
       '@typespec/http': 1.10.0(@typespec/compiler@1.10.0(@types/node@24.12.0))
