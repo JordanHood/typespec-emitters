@@ -11,7 +11,7 @@ catalog:
   "@typespec/http": 1.10.0
   "@typespec/openapi": 1.10.0
   "@typespec/rest": 1.0.0
-  typescript: 5.9.3
+  typescript: 6.0.2
   vitest: 4.1.2
   eslint: 9.39.4
   prettier: 3.8.1
