@@ -24,7 +24,7 @@
     "@typespec/compiler": "1.11.0",
     "@typespec/emitter-framework": "0.17.0",
     "@typespec/http": "1.11.0",
-    "fastify-type-provider-zod": "4.0.2",
+    "fastify-type-provider-zod": "6.1.0",
     "typespec-zod": "0.0.0-68",
     "zod": "4.3.6"
   },
@@ -84,7 +84,7 @@
     "@vitest/coverage-v8": "4.1.4",
     "@vitest/ui": "catalog:test",
     "fastify": "5.8.5",
-    "fastify-type-provider-zod": "4.0.2",
+    "fastify-type-provider-zod": "6.1.0",
     "rimraf": "catalog:build",
     "typescript": "catalog:",
     "typespec-zod": "0.0.0-68",
