@@ -83,7 +83,7 @@
     "@typespec/spector": "0.1.0-alpha.25",
     "@vitest/coverage-v8": "4.1.4",
     "@vitest/ui": "catalog:test",
-    "fastify": "5.8.4",
+    "fastify": "5.8.5",
     "fastify-type-provider-zod": "4.0.2",
     "rimraf": "catalog:build",
     "typescript": "catalog:",
