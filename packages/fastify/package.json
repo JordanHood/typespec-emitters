@@ -26,7 +26,7 @@
     "@typespec/http": "1.11.0",
     "fastify-type-provider-zod": "4.0.2",
     "typespec-zod": "0.0.0-68",
-    "zod": "4.4.2"
+    "zod": "4.4.3"
   },
   "peerDependenciesMeta": {
     "fastify-type-provider-zod": {
@@ -89,6 +89,6 @@
     "typescript": "catalog:",
     "typespec-zod": "0.0.0-68",
     "vitest": "catalog:",
-    "zod": "4.4.2"
+    "zod": "4.4.3"
   }
 }
