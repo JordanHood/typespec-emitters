@@ -21,8 +21,8 @@
     }
   },
   "peerDependencies": {
-    "@typespec/compiler": "1.11.0",
-    "@typespec/emitter-framework": "0.17.0"
+    "@typespec/compiler": "1.15.0",
+    "@typespec/emitter-framework": "0.20.0"
   },
   "files": [
     "dist",

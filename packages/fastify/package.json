@@ -21,12 +21,12 @@
     }
   },
   "peerDependencies": {
-    "@typespec/compiler": "1.11.0",
-    "@typespec/emitter-framework": "0.17.0",
-    "@typespec/http": "1.11.0",
+    "@typespec/compiler": "1.15.0",
+    "@typespec/emitter-framework": "0.20.0",
+    "@typespec/http": "1.15.0",
     "fastify-type-provider-zod": "4.0.2",
     "typespec-zod": "0.0.0-68",
-    "zod": "4.4.3"
+    "zod": "4.5.4"
   },
   "peerDependenciesMeta": {
     "fastify-type-provider-zod": {
@@ -79,16 +79,16 @@
     "@types/node": "catalog:test",
     "@typespec/compiler": "catalog:",
     "@typespec/emitter-framework": "catalog:",
-    "@typespec/http-specs": "0.1.0-alpha.36",
-    "@typespec/spector": "0.1.0-alpha.25",
-    "@vitest/coverage-v8": "4.1.6",
+    "@typespec/http-specs": "0.1.0-alpha.41",
+    "@typespec/spector": "0.1.0-alpha.28",
+    "@vitest/coverage-v8": "4.1.11",
     "@vitest/ui": "catalog:test",
-    "fastify": "5.8.5",
+    "fastify": "5.12.3",
     "fastify-type-provider-zod": "4.0.2",
     "rimraf": "catalog:build",
     "typescript": "catalog:",
     "typespec-zod": "0.0.0-68",
     "vitest": "catalog:",
-    "zod": "4.4.3"
+    "zod": "4.5.4"
   }
 }
